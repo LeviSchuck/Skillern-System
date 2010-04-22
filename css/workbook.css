@@ -1,0 +1,77 @@
+.typename {
+    font-size: 25px;
+    text-align: center;
+    padding-bottom: 5px;
+    padding-top: 10px;
+    border-top: black thin dashed;
+}
+.chapterhead {
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+}
+.nbr {
+    float: left;
+padding-right: 20px;
+width: 15px;
+}
+.contentrow {
+    overflow: auto;
+    padding-bottom: 5px;
+}
+.cola {
+    float: left;
+    padding-right: 5px;
+    font-weight: bold;
+    width: 140px;
+}
+.colb {
+    float: left;
+     width: 780px;
+}
+.type1 .cola {
+    width: 140px;
+    
+}
+.type1 .colb {
+    width: 780px;
+}
+.type5 .colc {
+    clear: left;
+}
+.colc .colcletter {
+    float: left;
+    width: 15px;
+    clear: left;
+    padding-left: 40px;
+    padding-right: 20px;
+}
+.colc .colcline {
+    float: left;
+    width: 880px;
+}
+.ccorrect {
+    font-weight: bolder;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.type4 .cola {
+    width: 140px;
+    
+}
+.type4 .colb {
+    width: 780px;
+}
+.type2 .cola {
+    width: 140px;
+    
+}
+.type2 .colb {
+    width: 780px;
+}
+.type3 .cola {
+    width: 280px;
+}
+.type3 .colb {
+    width: 640px;
+}

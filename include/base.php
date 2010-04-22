@@ -1,0 +1,197 @@
+<?php
+session_start();
+include("include/connect.php");
+$cscript = "";
+$secret = "Mr Skillern eats little kids' candy";
+class base64salted
+{
+    public $salt;
+    public $keyish;
+    function __construct ($string) {
+        $this->salt = $string;
+        $this->keyish = sha1($this->salt);
+    }
+    private function safeindex ($array, $index) {
+        $index++;
+        return ($index % $array == 0 ? $array : $index % $array) - 1;
+    }
+    public function encode ($array) {
+        $key = $this->keyish;
+        $output='';
+        for ($i=0; $i<strlen($key); $i++) {
+            $rotArray[] = $this->safeindex(3,ord($key[$i]));
+        }
+        $arrayCount = count($rotArray); 
+        if (is_array($array)) {
+            preg_match_all("#.#",base64_encode(serialize($array)),$outputarr);
+        } else {
+            preg_match_all("#.#",base64_encode($array),$outputarr);
+        }
+        foreach ($outputarr[0] as $k => $v) {
+            $output .= ( (($k%2) != 1)?(chr(ord($v)+$rotArray[$this->safeindex($arrayCount,$k)])):(chr(ord($v)+$rotArray[$this->safeindex($arrayCount,$k)+1])) );
+        }
+        return urlencode(strrev($output));
+    }
+    public function decode ($array) {
+        $key = $this->keyish;
+        $output='';
+        for ($i=0; $i<strlen($key); $i++) {
+            $rotArray[] = $this->safeindex(3,ord($key[$i]));
+        }
+        $arrayCount = count($rotArray);
+        $array = strrev(urldecode($array));
+        preg_match_all("#.#",$array,$outputarr);
+        foreach ($outputarr[0] as $k => $v) {
+            $output  .= ( (($k%2) != 1)?(chr(ord($v)-$rotArray[$this->safeindex($arrayCount,$k)])):(chr(ord($v)-$rotArray[$this->safeindex($arrayCount,$k)+1])) );
+        }
+        if(unserialize(base64_decode($output))) {
+            return unserialize(base64_decode($output));
+        } else {
+            return base64_decode($output);
+        }
+    }
+}
+$b64c = new base64salted($secret);
+function updatetime() {
+        global $_SESSION, $sdb;
+        $id = $_SESSION['session'];
+        //echo $id;
+        $time = time() - (int)$_SESSION['time'];
+        $sql = "SELECT timeonline FROM skllern_users WHERE sessionid = '" .
+            sqlite_escape_string($id) . "' LIMIT 1";
+        $result = sqlite_query($sdb,$sql);
+        while ($row = sqlite_fetch_array($result)) {
+            $time2 = (int)$row[0];
+        }
+        $time3 = $time + $time2;
+        $sql = "UPDATE skllern_users SET timeonline = '" . $time3 .
+            "', lasttime = '" . time() . "' WHERE sessionid = '$id'";
+        $result = sqlite_query($sdb,$sql);
+        $_SESSION['time'] = time();
+    }
+function removecrap($text) {
+    $text = (string )$text;
+    $text = str_replace('’', '\'',$text);
+    $text = htmlspecialchars(stripslashes( $text));
+    $text = str_replace("&amp;quot;", "&quot;", $text);
+    $text = str_replace("&amp;amp;", "&amp;", $text);
+    $text = str_replace("", "'", $text);
+    $text = str_replace(array('','','?'), "\"", $text);
+    return $text;
+}
+if(isset($_SESSION['skillern'])){
+    
+    updatetime();
+}
+function jaccard($base, $compare){
+    $m11 = 0;//match
+    $m00 = 0;//not match
+    $base = explode(" ", $base);//make array of individual words
+    $compare = array_unique(explode(" ", $compare));//get rid of duplicate words
+    foreach($base as $bword){
+            foreach($compare as $cword){
+                $lev = levenshtein($cword, $bword,12,32,27);//test for score
+                if($lev < 100){//meaning word is close to current, like queen and queens.
+                    $m11+=(100-$lev)/100;//add a weighted score.
+                }else{
+                    $m00++;
+                }
+            }
+    }
+    return ($m11+(2*$m00/5))/(($m00 + 1.2*$m11));//my attempt to weight more not right 
+}
+function getlikeres($current, $data, $data2){
+    $others = array();
+    $count = count($data2);
+    $match = array();
+    //get matches between arrays, as one is local and the other(2) is global data, but we will be referring to the global
+    foreach($data as $key=> $dat){
+        foreach($data2 as $key2 => $dat2){
+            if($dat[1] == $dat2[1]){
+                $match[$key] = $key2;
+                //print_r($dat1);
+            }
+        }
+    }
+    //print_r($data2);
+    //print_r($match);
+    for($x = 0; $x < $count; $x++){
+        $others[$x] = trim(strtolower(preg_replace('/(&\w+;|\W)+/i', ' ',$data2[$x][1].' '.$data2[$x][0])));
+        //gets rid of html things like &amp; along with other characters that are not alphanumeric
+        //remove short words.
+        $temp = explode(" ",$others[$x]);
+        $county = count($temp);
+        for($q = 0; $q < $county; $q++){
+            if(strlen($temp[$q]) < 4){
+                unset($temp[$q]);
+            }
+        }
+        $others[$x] = implode(" ", $temp);
+        unset($temp);
+        //end remove short words
+    }
+
+    $colt = $others[$match[$current]];//the current statement from the global.
+    //echo $colt." <--";
+    $scores = array();
+    for($x = 0; $x < $count; $x++){
+        if($x != $match[$current]){//don't wan't to check ourselves.
+            $scores[$x] = jaccard($colt, $others[$x]);
+
+            //echo "<br>".$others[$x].$scores[$x];
+        }
+    }
+    arsort($scores);//sort so it goes like 0.8, 0.7. 0.3 
+    //print_r($scores);
+    //echo "<br>";
+    $start = 0;
+    $posibles = array($match[$current]);//the correct answer
+    //add incorrect but close answers.
+    foreach($scores as $key => $score){
+        //if($score < 0.8){
+        if($start < 4){//we do not want any more than 3 other results
+            $start++;
+            $posibles[] = $key;
+            //print_r($data2[$key]);
+            //print_r($score);
+        }else{
+            break;
+        }
+        //}
+    }
+    shuffle($posibles);
+    return $posibles;
+}
+function fetchatPOS($needle, $haystack){
+    $c = count($haystack);
+    for($x = 0; $x < $c; $x++){
+        if ($haystack[$x]['id'] == $needle){
+            return $x;
+        break;
+        }
+    }
+}
+function fetchatID($needle, $haystack){
+    return $haystack[$needle]['id'];
+}
+function enuml($num){
+    $a = array();
+    for($x = 0; $x < $num; $x++){
+        $a[$x] = $x;
+    }
+    return $a;
+}
+function fixTheText($input){
+    $input = stripslashes($input);
+    $input = htmlentities($input);
+    /*$input = trim(preg_replace('/\w/i', '', $input));
+    $count = strlen($input);
+    $t = '';
+    for($x = 0; $x < $count; $x++){
+        $t.= ' '.ord(substr($input,$x, 1));
+    }
+    return $t;*/
+    $input = str_replace(chr(146),'',$input);
+    return $input;
+}
+?>
