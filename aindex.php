@@ -137,6 +137,7 @@ $(document).ready(function() {
     $('.mcontent').html($('.workingarea').find('.bcontent').html());
     
     $(".lbutton").expire();
+    /* In this case if livequery does not initiate, then it is fine if text is selectable */
     $('.noselect').livequery( function(){
 	$(this).disableTextSelect();
 	});

@@ -193,8 +193,7 @@ if(panhook === undefined){
         $('.mtitle').slideDown(300);
         
     });
-if(panhook == -1){
-    panhook  = 1;
+
     /* DO NOT USE LIVE */
     $('.logout').click( function(){
         $('.logout').unbind();
@@ -230,7 +229,7 @@ if(panhook == -1){
         
     });
     
-    }
+
     });
         $('.eprofl').unbind();
         $('.eprofl').click(function(){
