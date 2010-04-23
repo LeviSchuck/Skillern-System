@@ -221,17 +221,26 @@ function checkloadedy3(){
         case 3:
             //mode detection cannot be used because it just isn't logical...
             //multiple choice
+            {
+                
+            }
             break;
         case 4:
             //Ideally A leads to B leads to C, but we don't wan't the order to be messed up in the students' head so we will not do another mode
+            {//however, we must have a default
+                
+            }
             break;
         case 5:
             //I seriously doubt people want to type in a defenition letter for letter as a second mode. so no.
+            {//however we want a default
+                
+            }
             break;
         case 6:
             //this is True and False, first we will have to determine what is true or false, and select a few of the opposite.
             //so mode detection is a go.
-            {
+            {//not working yet
                 switch($_SESSION['modes'][1]){
                     case 1:
                         echo '<div class="questmesg">'.$_SESSION['qmesg'].'</div>';
