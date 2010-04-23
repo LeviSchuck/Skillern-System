@@ -54,10 +54,11 @@ function login(){
     $html = <<<HT
     <div class="centered">
         <div class="lerror">$errort</div>
-	<form id="loginform">
+	<form id="loginform" action="?">
         <div class="frow"><div class="ftext noselect">Username</div><div class="textf"><input type="text" class="luser" value="$username" name="usern" /></div></div><br />
         <div class="frow"><div class="ftext noselect">Password</div><div class="textf"><input type="password" class="lpass" value="" name="pword" id="lpass" /></div></div><br />
         <br />
+	<div class="hidden"><input type="submit" value="Login" /></div>
         <div class="lbutton noselect" id="lbutton"> Login </div>
 	</form>
     </div>
@@ -119,9 +120,11 @@ function onloadedy() {
 	    $('.mtitle').slideDown(600);
 	    
 	});
-	
+	$('#loginform').unbind();
 	$('#loginform').submit(function() {
 	    $(".lbutton").trigger("click");
+	    $('#loginform').unbind();
+	    
 	    return false;
 	  });
 	
