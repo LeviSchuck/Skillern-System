@@ -26,6 +26,10 @@
     <div class="workingarea"><!-- --></div>
     <script type="text/javascript">
         $(document).ready(function() {
+		$('.noselect').livequery( function(){
+	    $(this).disableTextSelect();
+	    });
+		
 		$('.mainwrapper').fadeIn(600, function(){
 			$('.mcontent').html("Loading.. Please Wait.");
 	    $('.mtitle').html("Loading.. Please Wait.");
@@ -36,9 +40,7 @@
 		       $('.mcontent').slideUp(400, function(){
 			    $('.workingarea').html(data);
 			    $('.mcontent').html($('.workingarea').find('.bcontent').html());
-			    
-			    $('.mcontent').slideDown(600);
-			    
+			    $('.workingarea').find('.bcontent').html('');
 		       });
 		       
 		    }

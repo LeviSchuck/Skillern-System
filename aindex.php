@@ -64,21 +64,7 @@ HT;
 if(!isset($_SESSION['skillern'])){
 echo $html;
 $title = "Please Log in.";
-$cscript = <<<JS
-        $(".lbutton").livequery('click', function(){
-	$(".lbutton").expire();
-            $.ajax({
-                type: "POST",
-                url: "aindex.php",
-                data: "sub=1&usern=" + $('.luser').val() + "&pword=" + $('#lpass').val(),
-                success: function(data){
-                    
-                    $('.workingarea').html(data);
-                }
-            });
-        
-    });
-JS;
+$cscript = '';
 }
     return null;
 }
@@ -122,29 +108,61 @@ JS;
 <div class="bscript">
 <script type="text/javascript">
 
-
-$(document).ready(function() {
-    $('.mtitle').slideUp(400, function(){
-        $('.mtitle').html('<?php
-        echo $title;
-        ?>');
-        $('.mtitle').slideDown(600);
-        
-    });
-    $('.mcontent').css("background-image", "url(images/Key-icon.png)");
-    $('.mcontent').css("background-repeat", "no-repeat");
-    $('.mcontent').css("background-position", "center right");
-    $('.mcontent').html($('.workingarea').find('.bcontent').html());
-    
-    $(".lbutton").expire();
-    /* In this case if livequery does not initiate, then it is fine if text is selectable */
-    $('.noselect').livequery( function(){
-	$(this).disableTextSelect();
+function onloadedy() {
+    $(document).ready(function() {
+	$('.mtitle').slideUp(400, function(){
+	    $('.mtitle').html('<?php
+	    echo $title;
+	    ?>');
+	    
+	    $('.mtitle').slideDown(600);
+	    
 	});
-        <?php
-        echo $cscript;
-        ?>
-});
+	
+	
+	
+	$('.mcontent').slideDown(600);
+	$('.mcontent').css("background-image", "url(images/Key-icon.png)");
+	$('.mcontent').css("background-repeat", "no-repeat");
+	$('.mcontent').css("background-position", "center right");
+	//$('.mcontent').html($('.workingarea').find('.bcontent').html());
+	
+	
+	/* In this case if livequery does not initiate, then it is fine if text is selectable */
+	
+	<?php
+	    echo $cscript;
+	    ?>
+	//alert('should initiate now');
+	$(".lbutton").click( function(){
+	    $(".lbutton").unbind();
+		$.ajax({
+		    type: "POST",
+		    url: "aindex.php",
+		    data: "sub=1&usern=" + $('.luser').val() + "&pword=" + $('#lpass').val(),
+		    success: function(data){
+			
+			$('.workingarea').html(data);
+			$('.mcontent').html($('.workingarea').find('.bcontent').html());
+			    $('.workingarea').find('.bcontent').html('');
+		    }
+		});
+	    
+	});
+	//alert($(".lbutton").data('events'));
+	    
+    });
+}//end the onleadedy
+    function checkloadedy(){
+        if($('.workingarea').find('.bcontent').html() == ''){
+	    $(".lbutton").unbind();
+            onloadedy();
+        }else{
+            setTimeout('checkloadedy()', 50);
+	    
+        }
+     }
+     checkloadedy();
 </script>
 <div class="time">
     <?php echo time();
