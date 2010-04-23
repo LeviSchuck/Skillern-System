@@ -195,8 +195,9 @@ if(panhook === undefined){
     });
 if(panhook == -1){
     panhook  = 1;
-    $('.logout').livequery('click', function(){
-        $('.logout').expire();
+    /* DO NOT USE LIVE */
+    $('.logout').click( function(){
+        $('.logout').unbind();
             $.ajax({
                 type: "POST",
                 url: "logout.php",
@@ -209,9 +210,9 @@ if(panhook == -1){
             });
         
     });
-
-    $('.pchaptext').livequery('click', function(){
-        $('.pchaptext').expire();
+/* DO NOT USE LIVE */
+    $('.pchaptext').click( function(){
+        $('.pchaptext').unbind();
             $.ajax({
                 type: "POST",
                 url: "chview.php",
