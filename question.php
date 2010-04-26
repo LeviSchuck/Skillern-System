@@ -260,26 +260,40 @@ function checkloadedy3(){
                                 }
                             }//not returning what we want,
                             //data relies within qgata[pos][0] for whether true or false...
-                            /*
-                            
-                            if($response == ){//problem lies here
-                               $encode =  $b64t->encode((string)1000);
-                               echo $encode;
+                            if((int)$_SESSION['qdata'][$_SESSION['pos']][0] == 1){
+                                echo $b64t->encode((string)1000);
                             }else{
-                                $encode = $b64t->encode((string)(1000+pow((int)$response+1,2)));
-                                echo $encode;
-                            }*/
-                            echo $_SESSION['apos'];
-                                        echo '</div>';//end of hidden data
-                            echo '<div class="rtext">True</div>';//end rtext
+                                echo $b64t->encode((string)1001);//1001-1000-1 = 0, use 0 in the array detection
+                            }
+                            echo '</div>';//end of hidden data
+                            echo '<div class="rtext ';
+                            if(in_array(0,$_SESSION['history'][$_SESSION['pos']]['wrong'])){
+                                echo 'rwrong';
+                            }else{
+                                echo 'roption';
+                            }
+                            echo '">True</div>';//end rtext
                             echo '</div>';//end aresponse
                             
                             
                             //______________SPLIT TRUE AND FALSE__________
                             
                             echo '<div class="aresponse noselect">
-                                        <div class="hidden data">0</div>';//end of hidden data
-                            echo '<div class="rtext">false</div>';//end rtext
+                                        <div class="hidden data">';
+                            if((int)$_SESSION['qdata'][$_SESSION['pos']][0] == 0){
+                                echo $b64t->encode((string)1000);
+                            }else{
+                                echo $b64t->encode((string)1002);//1002-1000-1 = 1, use 1 in the array detection
+                            }
+                                        echo '</div>';//end of hidden data
+                            echo '<div class="rtext ';
+                            if(in_array(1,$_SESSION['history'][$_SESSION['pos']]['wrong'])){
+                                echo 'rwrong';
+                            }else{
+                                echo 'roption';
+                            }
+                            echo '">false</div>';//end rtext
+                            //print_r($_SESSION['history'][$_SESSION['pos']]['wrong']);
                             echo '</div>';//end aresponse
                         
                         break;
