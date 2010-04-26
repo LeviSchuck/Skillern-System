@@ -247,8 +247,30 @@ function checkloadedy3(){
                         
                         echo '<div class="colb prompt">'.stripslashes($_SESSION['qdata'][$_SESSION['pos']][1]).'</div>';
                             //start question
+                            //print_r($_SESSION);
+                            
                             echo '<div class="aresponse noselect">
-                                        <div class="hidden data">1</div>';//end of hidden data
+                                        <div class="hidden data">';
+                                        $b64t = new base64salted($secret.$_SESSION['session'].$_SESSION['pos'].$_SESSION['chq']['chid']);
+                            //
+                            
+                            foreach($_SESSION['adata'] as $key2 => $dat2){
+                                if($_SESSION['qdata'][$_SESSION['pos']][1] == $dat2[1]){
+                                    $_SESSION['apos'] = $key2;
+                                }
+                            }//not returning what we want,
+                            //data relies within qgata[pos][0] for whether true or false...
+                            /*
+                            
+                            if($response == ){//problem lies here
+                               $encode =  $b64t->encode((string)1000);
+                               echo $encode;
+                            }else{
+                                $encode = $b64t->encode((string)(1000+pow((int)$response+1,2)));
+                                echo $encode;
+                            }*/
+                            echo $_SESSION['apos'];
+                                        echo '</div>';//end of hidden data
                             echo '<div class="rtext">True</div>';//end rtext
                             echo '</div>';//end aresponse
                             
