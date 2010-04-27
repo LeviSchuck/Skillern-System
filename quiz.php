@@ -260,19 +260,21 @@ function onloadedy(){
         $('.percentb').progressBar(0);
         $('.goback').unbind();
         $('.goback').click( function(){
-            $.ajax({
-                type: "POST",
-                url: "chview.php",
-                data: "c=<?php echo  $_SESSION['chq']['chid'];?>",
-                success: function(data){
-                    $('.workingarea').html(data);
-                    $('.mcontent').slideUp(400, function(){
-                        $('.mcontent').html($('.workingarea').find('.bcontent').html());
-                        $('.workingarea').find('.bcontent').html('');
-                        $('.mcontent').slideDown(600);
-                    });
-                }
-            });
+            if (confirm("Are you sure you want to go back? You will lose all your progress if you do.")){
+                $.ajax({
+                    type: "POST",
+                    url: "chview.php",
+                    data: "c=<?php echo  $_SESSION['chq']['chid'];?>",
+                    success: function(data){
+                        $('.workingarea').html(data);
+                        $('.mcontent').slideUp(400, function(){
+                            $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                            $('.workingarea').find('.bcontent').html('');
+                            $('.mcontent').slideDown(600);
+                        });
+                    }
+                });
+            }
         });
         $.ajax({
                 type: "POST",

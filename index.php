@@ -9,6 +9,14 @@
 	<script type="text/javascript" src="js/jquery.progressbar.min.js"></script>
 	<script type="text/javascript" src="js/jquery.ahover.js"></script>
 	<script type="text/javascript" src="js/jquery.animateToClass.js"></script>
+	<script type="text/javascript">
+	
+	function closeWarning(){
+		return 'If you do this, you will lose everything you have done on this page. If you want to Go Back, do so with the buttons in the page. Else if you are exiting, go ahead.';
+	}
+		window.onbeforeunload = closeWarning;
+		
+	</script>
         <!-- end jQuery Stuff -->
         <!-- Base information like CSS -->
         <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
@@ -25,6 +33,7 @@
     </div>
     <div class="workingarea"><!-- --></div>
     <script type="text/javascript">
+    
         $(document).ready(function() {
 		$('.noselect').livequery( function(){
 	    $(this).disableTextSelect();
