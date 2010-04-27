@@ -252,14 +252,7 @@ function checkloadedy3(){
                             echo '<div class="aresponse noselect">
                                         <div class="hidden data">';
                                         $b64t = new base64salted($secret.$_SESSION['session'].$_SESSION['pos'].$_SESSION['chq']['chid']);
-                            //
-                            
-                            foreach($_SESSION['adata'] as $key2 => $dat2){
-                                if($_SESSION['qdata'][$_SESSION['pos']][1] == $dat2[1]){
-                                    $_SESSION['apos'] = $key2;
-                                }
-                            }//not returning what we want,
-                            //data relies within qgata[pos][0] for whether true or false...
+                            //data relies within qdata[pos][0] for whether true or false...
                             if((int)$_SESSION['qdata'][$_SESSION['pos']][0] == 1){
                                 echo $b64t->encode((string)1000);
                             }else{
@@ -343,7 +336,10 @@ function onloadedy(){
                 .dequeue();
             $(this).queue(arguments.callee);
         }});
-        
+        $('.percentb').progressBar(<?php
+        //determine how far we are into the data.
+        echo ceil(100*($_SESSION['pos']/count($_SESSION['qdata'])));
+        ?>);
         $('.aresponse').unbind();
         $('.aresponse').click(function(){
             $('.aresponse').unbind();

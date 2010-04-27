@@ -224,6 +224,7 @@ $title = "Choose the Correct Answer";
     <div class="ctitle">Please wait... Loading...</div>
 </div><!-- end questionw -->
 <div class="hidden qposition">0</div>
+<div class="qprogress">Progress: <div class="percentb"><!-- --> </div></div>
 <div class="goback"><div class="hidden data">chview.php</div><div class="gbtext">Go Back</div></div>
 <div class="qworkingarea hidden"></div><!-- end qworkingarea -->
 </div><!-- end bcontent -->
@@ -256,6 +257,7 @@ function onloadedy(){
                 }
             });
         });
+        $('.percentb').progressBar(0);
         $('.goback').unbind();
         $('.goback').click( function(){
             $.ajax({

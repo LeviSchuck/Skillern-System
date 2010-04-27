@@ -116,7 +116,7 @@ background-repeat: no-repeat;
    float: left;
    position: static;
  }
- .logout,  .pcornell, .eprofl, .cuser, .vusers, .smail, .rlrec, .caled, .equot , .goback,  .fupdate, .gotonext{
+ .logout,  .pcornell, .eprofl, .cuser, .vusers, .smail, .rlrec, .caled, .equot , .goback,  .fupdate, .gotonext, .qprogress{
    display: block;
    padding-left: 28px;
    height: 24px;
@@ -305,6 +305,9 @@ margin-right: 16px;
  }
  .goback {
    background-image: url(../images/Previous-icon.png);
+   width: 100px;
+   float: left;
+   clear: left;
  }
  .testtext {
    
@@ -439,4 +442,14 @@ padding: 3px;
 -webkit-border-radius: 5px;
 -moz-border-radius: 5px;
  border: 1px solid #555;
-} 
+}
+.qprogress {
+   width: 260px;
+   float:right;
+   background-image: url(../images/Synchronize-icon.png);
+   overflow: auto;
+}
+.qprogress .percentb {
+   width: 180px;
+   float: right;
+}
