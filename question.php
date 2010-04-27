@@ -243,9 +243,10 @@ function checkloadedy3(){
             {//not working yet
                 switch($_SESSION['modes'][1]){
                     case 1:
-                        echo '<div class="questmesg">'.$_SESSION['qmesg'].'</div>';
-                        
-                        echo '<div class="colb prompt">'.stripslashes($_SESSION['qdata'][$_SESSION['pos']][1]).'</div>';
+                        {
+                            echo '<div class="questmesg">'.$_SESSION['qmesg'].'</div>';
+                            
+                            echo '<div class="colb prompt">'.stripslashes($_SESSION['qdata'][$_SESSION['pos']][1]).'</div>';
                             //start question
                             //print_r($_SESSION);
                             
@@ -288,32 +289,67 @@ function checkloadedy3(){
                             echo '">false</div>';//end rtext
                             //print_r($_SESSION['history'][$_SESSION['pos']]['wrong']);
                             echo '</div>';//end aresponse
-                        
+                        }
                         break;
                     
                     case 2:
-                        echo '<div class="cola prompt">Which of the following statements is ';
-                        if((int)$_SESSION['qdata'][$_SESSION['pos']][0]){
-                            echo 'True';
-                            $tf = true;
-                        }else{
-                            echo 'False';
-                            $tf = false;
-                        }
-                        echo '?</div>';
-                        if(!isset($_SESSION['history'][$_SESSION['pos']]['res'])){
-                            $temp = array($_SESSION['pos']);
-                            //add the current id, and then select
-                            if(!isset($_SESSION['history']['false'])){
-                                $tempc = count($_SESSION['adata']);
+                        {
+                            echo '<div class="questmesg">'.$_SESSION['qmesg'].'</div>';
+                            echo '<div class="cola prompt">Which of the following statements is ';
+                            if((int)$_SESSION['qdata'][$_SESSION['pos']][0]){
+                                echo 'True';
+                                $tf = true;
+                            }else{
+                                echo 'False';
+                                $tf = false;
                             }
+                            echo '?</div>';
+                            //develope the question options
+                            if(!isset($_SESSION['history'][$_SESSION['pos']]['res'])){
+                                $temp = array($_SESSION['pos']);
+                                //add the current id, and then select
+                                if(!isset($_SESSION['history']['false'])){
+                                    $tempc = count($_SESSION['adata']);
+                                }
+                                
+                                
+                                $_SESSION['history'][$_SESSION['pos']]['wrong'] = array();
+                            }
+                            //now present the question options
                             
-                            
-                            $_SESSION['history'][$_SESSION['pos']]['wrong'] = array();
+                            foreach($_SESSION['history'][$_SESSION['pos']]['res'] as $response){
+                                echo '<div class="aresponse noselect">';
+                                echo '<div class="hidden data">';
+                                //Section is copied from the qpreset 1
+                                $b64t = new base64salted($secret.$_SESSION['session'].$_SESSION['pos'].$_SESSION['chq']['chid']);
+                                foreach($_SESSION['adata'] as $key2 => $dat2){
+                                    if($_SESSION['qdata'][$_SESSION['pos']][1] == $dat2[1]){
+                                        $_SESSION['apos'] = $key2;
+                                    }
+                                }
+                                
+                                
+                                if($response == $_SESSION['apos']){//problem lies here
+                                   $encode =  $b64t->encode((string)1000);
+                                   echo $encode;
+                                }else{
+                                    $encode = $b64t->encode((string)(1000+pow((int)$response+1,2)));
+                                    echo $encode;
+                                }
+                                echo '</div>';//end of hidden data
+                                echo '<div class="rtext ';
+                                if(in_array($response,$_SESSION['history'][$_SESSION['pos']]['wrong'])){
+                                    echo 'rwrong';
+                                }else{
+                                    echo 'roption';
+                                }
+                                echo '">';//end the start of rtext
+                                echo fixTheText($_SESSION['adata'][$response][1]);
+                                echo '</div>';//end rtext
+                                echo '</div>';//end aresponse
+                            }
+
                         }
-                        
-                        
-                        
                         break;
                 }
             }
