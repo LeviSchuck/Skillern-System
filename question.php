@@ -78,6 +78,9 @@ if(isset($_REQUEST['selected'])){
         
         sqlite_query($sdb,$sql);
         //echo sqlite_last_error($sdb);
+        if(isset($_SESSION['fdata'])){
+        unset($_SESSION['fdata'], $_SESSION['tdata']);
+        }
         ?>
         <div class="qcontent">
             Please wait, Finalizing Results.
@@ -305,11 +308,38 @@ function checkloadedy3(){
                             }
                             echo '?</div>';
                             //develope the question options
+                            
                             if(!isset($_SESSION['history'][$_SESSION['pos']]['res'])){
-                                $_SESSION['history'][$_SESSION['pos']]['res'] = getlikeres($_SESSION['pos'],$_SESSION['qdata'],$_SESSION['adata']);
+                                //develope false statements
+                                if(!isset($_SESSION['fdata'])){
+                                   $_SESSION['fdata'] = array();
+                                    foreach($_SESSION['qdata'] as $tfa){
+                                        if($tfa[0] == 0){
+                                            $_SESSION['fdata'][] = $tfa;
+                                        }
+                                    }
+                                }
+                                //develope true statements
+                                if(!isset($_SESSION['tdata'])){
+                                    $_SESSION['tdata'] = array();
+                                    foreach($_SESSION['qdata'] as $tfa){
+                                        if($tfa[0] == 1){
+                                            $_SESSION['tdata'][] = $tfa;
+                                        }
+                                    }
+                                }
+                                //and get the alternate answers(wrong)
+                                if($tf){
+                                    //we are true, we need false
+                                    $_SESSION['history'][$_SESSION['pos']]['res'] = getlikeres($_SESSION['pos'],$_SESSION['qdata'],$_SESSION['fdata']);
+                                }else{
+                                    //we are false, we need true.
+                                    $_SESSION['history'][$_SESSION['pos']]['res'] = getlikeres($_SESSION['pos'],$_SESSION['qdata'],$_SESSION['tdata']);
+                                }
+                                
                                 $_SESSION['history'][$_SESSION['pos']]['wrong'] = array();
                             }
-                            
+                            echo $_SESSION['qdata'][$_SESSION['pos']][1];
                             //now present the question options
                             
                             foreach($_SESSION['history'][$_SESSION['pos']]['res'] as $response){
