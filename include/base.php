@@ -194,4 +194,64 @@ function fixTheText($input){
     $input = str_replace(chr(146),'',$input);
     return $input;
 }
+
+
+
+//we need a variant of the get-like res for True and False
+
+function getlikeresTF($current, $data, $data2){
+    $others = array();
+    $count = count($data2);
+    $tf = (int)$data[$current];
+    $match = array();
+    foreach($data as $key=> $dat){
+        foreach($data2 as $key2 => $dat2){
+            if($dat[1] == $dat2[1]){
+                $match[$key] = $key2;
+                //print_r($dat1);
+            }
+        }
+    }
+$colt = $others[$match[$current]];//the current statement from the global.
+print_r($colt);
+    for($x = 0; $x < $count; $x++){
+        $others[$x] = trim(strtolower(preg_replace('/(&\w+;|\W)+/i', ' ',$data2[$x][1].' '.$data2[$x][0])));
+        //gets rid of html things like &amp; along with other characters that are not alphanumeric
+        //remove short words.
+        $temp = explode(" ",$others[$x]);
+        $county = count($temp);
+        for($q = 0; $q < $county; $q++){
+            if(strlen($temp[$q]) < 4){
+                unset($temp[$q]);
+            }
+        }
+        $others[$x] = implode(" ", $temp);
+        unset($temp);
+        //end remove short words
+    }
+
+    
+    $scores = array();
+    for($x = 0; $x < $count; $x++){
+        if($x != $match[$current]){//don't wan't to check ourselves.
+            $scores[$x] = jaccard($colt, $others[$x]);
+        }
+    }
+    arsort($scores);//sort so it goes like 0.8, 0.7. 0.3 
+    $start = 0;
+    $posibles = array($match[$current]);//the correct answer
+    //add incorrect but close answers.
+    foreach($scores as $key => $score){
+        if($start < 4){//we do not want any more than 3 other results
+            $start++;
+            $posibles[] = $key;
+        }else{
+            break;
+        }
+    }
+    shuffle($posibles);
+    return $posibles;
+}
+
+
 ?>

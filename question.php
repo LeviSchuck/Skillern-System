@@ -78,9 +78,6 @@ if(isset($_REQUEST['selected'])){
         
         sqlite_query($sdb,$sql);
         //echo sqlite_last_error($sdb);
-        if(isset($_SESSION['fdata'])){
-        unset($_SESSION['fdata'], $_SESSION['tdata']);
-        }
         ?>
         <div class="qcontent">
             Please wait, Finalizing Results.
@@ -308,7 +305,6 @@ function checkloadedy3(){
                             }
                             echo '?</div>';
                             //develope the question options
-                            
                             if(!isset($_SESSION['history'][$_SESSION['pos']]['res'])){
                                 //develope false statements
                                 if(!isset($_SESSION['fdata'])){
@@ -328,20 +324,25 @@ function checkloadedy3(){
                                         }
                                     }
                                 }
-                                //and get the alternate answers(wrong)
-                                if($tf){
-                                    //we are true, we need false
-                                    $_SESSION['history'][$_SESSION['pos']]['res'] = getlikeres($_SESSION['pos'],$_SESSION['qdata'],$_SESSION['fdata']);
-                                }else{
-                                    //we are false, we need true.
-                                    $_SESSION['history'][$_SESSION['pos']]['res'] = getlikeres($_SESSION['pos'],$_SESSION['qdata'],$_SESSION['tdata']);
+                                //see if pos is different
+                                if($_SESSION['pos'] != $_SESSION['tempd'][0]){
+                                    $_SESSION['tempd'][0] = $_SESSION['pos'];
+                                    $_SESSION['tempd'][1] = $_SESSION['qdata'][$_SESSION['qdata']];
+                                    if($tf){
+                                        
+                                        $_SESSION['tempd'][1] = array_merge($_SESSION['tdata'],$_SESSION['tdata']);
+                                    }else{
+                                        $_SESSION['tempd'][1] = array_merge($_SESSION['tdata'],$_SESSION['fdata']);
+                                    }
                                 }
+                                //and get the alternate answers(wrong)
+                                $_SESSION['history'][$_SESSION['pos']]['res'] = getlikeresTF($_SESSION['pos'],$_SESSION['qdata'],$_SESSION['tempd'][1]);
                                 
                                 $_SESSION['history'][$_SESSION['pos']]['wrong'] = array();
                             }
-                            echo $_SESSION['qdata'][$_SESSION['pos']][1];
-                            //now present the question options
                             
+                            //now present the question options
+                            echo $_SESSION['qdata'][$_SESSION['pos']][1];
                             foreach($_SESSION['history'][$_SESSION['pos']]['res'] as $response){
                                 echo '<div class="aresponse noselect">';
                                 echo '<div class="hidden data">';
