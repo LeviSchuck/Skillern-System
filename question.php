@@ -306,15 +306,10 @@ function checkloadedy3(){
                             echo '?</div>';
                             //develope the question options
                             if(!isset($_SESSION['history'][$_SESSION['pos']]['res'])){
-                                $temp = array($_SESSION['pos']);
-                                //add the current id, and then select
-                                if(!isset($_SESSION['history']['false'])){
-                                    $tempc = count($_SESSION['adata']);
-                                }
-                                
-                                
+                                $_SESSION['history'][$_SESSION['pos']]['res'] = getlikeres($_SESSION['pos'],$_SESSION['qdata'],$_SESSION['adata']);
                                 $_SESSION['history'][$_SESSION['pos']]['wrong'] = array();
                             }
+                            
                             //now present the question options
                             
                             foreach($_SESSION['history'][$_SESSION['pos']]['res'] as $response){
