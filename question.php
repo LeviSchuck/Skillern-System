@@ -307,37 +307,9 @@ function checkloadedy3(){
                             echo '?</div>';
                             //develope the question options
                             if(!isset($_SESSION['history'][$_SESSION['pos']]['res'])){
-                                //develope false statements
-                                if(!isset($_SESSION['fdata'])){
-                                   $_SESSION['fdata'] = array();
-                                    foreach($_SESSION['qdata'] as $tfa){
-                                        if($tfa[0] == 0){
-                                            $_SESSION['fdata'][] = $tfa;
-                                        }
-                                    }
-                                }
-                                //develope true statements
-                                if(!isset($_SESSION['tdata'])){
-                                    $_SESSION['tdata'] = array();
-                                    foreach($_SESSION['qdata'] as $tfa){
-                                        if($tfa[0] == 1){
-                                            $_SESSION['tdata'][] = $tfa;
-                                        }
-                                    }
-                                }
-                                //see if pos is different
-                                if($_SESSION['pos'] != $_SESSION['tempd'][0]){
-                                    $_SESSION['tempd'][0] = $_SESSION['pos'];
-                                    $_SESSION['tempd'][1] = $_SESSION['qdata'][$_SESSION['qdata']];
-                                    if($tf){
-                                        
-                                        $_SESSION['tempd'][1] = array_merge($_SESSION['tdata'],$_SESSION['tdata']);
-                                    }else{
-                                        $_SESSION['tempd'][1] = array_merge($_SESSION['tdata'],$_SESSION['fdata']);
-                                    }
-                                }
+                                
                                 //and get the alternate answers(wrong)
-                                $_SESSION['history'][$_SESSION['pos']]['res'] = getlikeresTF($_SESSION['pos'],$_SESSION['qdata'],$_SESSION['tempd'][1]);
+                                $_SESSION['history'][$_SESSION['pos']]['res'] = getlikeresTF($_SESSION['pos'],$_SESSION['qdata']);
                                 
                                 $_SESSION['history'][$_SESSION['pos']]['wrong'] = array();
                             }
