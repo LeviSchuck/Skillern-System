@@ -199,50 +199,52 @@ function fixTheText($input){
 
 //we need a variant of the get-like res for True and False
 
-function getlikeresTF($current, $data, $data2){
+function getlikeresTF($current, $data){
     $others = array();
-    $count = count($data2);
-    $tf = (int)$data[$current];
-    $match = array();
-    foreach($data as $key=> $dat){
-        foreach($data2 as $key2 => $dat2){
-            if($dat[1] == $dat2[1]){
-                $match[$key] = $key2;
-                //print_r($dat1);
-            }
-        }
-    }
-$colt = $others[$match[$current]];//the current statement from the global.
-print_r($colt);
+    $count = count($data);
+    $tf = (int)$data[$current][0];
+
+$colt = $data[$current][1];//the current statement from the global.
     for($x = 0; $x < $count; $x++){
-        $others[$x] = trim(strtolower(preg_replace('/(&\w+;|\W)+/i', ' ',$data2[$x][1].' '.$data2[$x][0])));
-        //gets rid of html things like &amp; along with other characters that are not alphanumeric
-        //remove short words.
-        $temp = explode(" ",$others[$x]);
-        $county = count($temp);
-        for($q = 0; $q < $county; $q++){
-            if(strlen($temp[$q]) < 4){
-                unset($temp[$q]);
-            }
+        //see if the types are the opposite of the current
+        $valid = 0;
+        if($data[$x][0] == 0 && $tf == 1){//see if opposite! 
+            $valid = 1;
+        }else if($data[$x][0] == 1 && $tf == 0){
+            $valid = 1;//this could be reduced from 5 lines to 3, but 
         }
-        $others[$x] = implode(" ", $temp);
-        unset($temp);
-        //end remove short words
+        if($valid){
+            $others[$x] = trim(strtolower(preg_replace('/(&\w+;|\W)+/i', ' ',$data[$x][1])));
+            //gets rid of html things like &amp; along with other characters that are not alphanumeric
+            //remove short words.
+            $temp = explode(" ",$others[$x]);
+            $county = count($temp);
+            for($q = 0; $q < $county; $q++){
+                if(strlen($temp[$q]) < 4){//get rid of the practically non-existant ones.
+                    unset($temp[$q]);
+                }
+            }
+            $others[$x] = implode(" ", $temp);
+            unset($temp);
+            //end remove short words
+        }
     }
+    unset($valid);
 
     
     $scores = array();
     for($x = 0; $x < $count; $x++){
-        if($x != $match[$current]){//don't wan't to check ourselves.
+        if(isset($others[$x])){
+            
             $scores[$x] = jaccard($colt, $others[$x]);
         }
     }
     arsort($scores);//sort so it goes like 0.8, 0.7. 0.3 
     $start = 0;
-    $posibles = array($match[$current]);//the correct answer
+    $posibles = array($current);//the correct answer
     //add incorrect but close answers.
     foreach($scores as $key => $score){
-        if($start < 4){//we do not want any more than 3 other results
+        if($start < 3){//we do not want any more than 3 other results
             $start++;
             $posibles[] = $key;
         }else{

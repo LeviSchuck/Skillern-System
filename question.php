@@ -303,6 +303,7 @@ function checkloadedy3(){
                                 echo 'False';
                                 $tf = false;
                             }
+                            
                             echo '?</div>';
                             //develope the question options
                             if(!isset($_SESSION['history'][$_SESSION['pos']]['res'])){
