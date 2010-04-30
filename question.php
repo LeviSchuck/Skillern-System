@@ -207,6 +207,7 @@ function checkloadedy3(){
                         }
                         break;
                     case 3:
+                        //have yet to determine the typing thing.
                         
                         break;
                 }
@@ -222,7 +223,45 @@ function checkloadedy3(){
             //mode detection cannot be used because it just isn't logical...
             //multiple choice
             {
-                
+                /*
+                 Multiple choice array
+                 0: which is the correct answer
+                 1:the statement
+                 2: the options seperated by \n
+                */
+                echo '<div class="colb prompt">'.stripslashes($_SESSION['qdata'][$_SESSION['pos']][1]).'</div>';
+                if(!isset($_SESSION['qdata'][$_SESSION['pos']]['answers'])){
+                    //okay, so we have not set our array yet for our answers, they are still in 'text mode'
+                    $temp = trim(preg_replace('/(\n)+/im', '\1', stripslashes($_SESSION['qdata'][$_SESSION['pos']][2])));
+                    $_SESSION['qdata'][$_SESSION['pos']]['answers'] = preg_split('/(\n)/im', $temp);
+                }
+                $position = 0;
+                foreach($_SESSION['qdata'][$_SESSION['pos']]['answers'] as $text){
+                    $text = trim($text);
+                    echo '<div class="aresponse noselect">';
+                    echo '<div class="hidden data">';
+                    $b64t = new base64salted($secret.$_SESSION['session'].$_SESSION['pos'].$_SESSION['chq']['chid']);                    
+                    
+                    if($position == (int)$_SESSION['qdata'][$_SESSION['pos']][0]){
+                       $encode =  $b64t->encode((string)1000);
+                       echo $encode;
+                    }else{
+                        $encode = $b64t->encode((string)(1000+pow((int)$position+1,2)));
+                        echo $encode;
+                    }
+                    echo '</div>';//end of hidden data
+                    echo '<div class="rtext ';
+                    if(in_array($position,$_SESSION['history'][$_SESSION['pos']]['wrong'])){
+                        echo 'rwrong';
+                    }else{
+                        echo 'roption';
+                    }
+                    echo '">';//end the start of rtext
+                    echo ucfirst(fixTheText($text));
+                    echo '</div>';//end rtext
+                    echo '</div>';//end aresponse
+                    $position++;//add 1 to our position as we cycle through.
+                }
             }
             break;
         case 4:
@@ -240,7 +279,7 @@ function checkloadedy3(){
         case 6:
             //this is True and False, first we will have to determine what is true or false, and select a few of the opposite.
             //so mode detection is a go.
-            {//not working yet
+            {
                 switch($_SESSION['modes'][1]){
                     case 1:
                         {
