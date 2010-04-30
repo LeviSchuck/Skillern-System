@@ -6,20 +6,36 @@ require("include/base.php");
 //$_SESSION['modes'];//the modes, we will mainly use mode1 in this page.
 //$_SESSION['qpreset']; //the preset we will base our problems on.
 if(isset($_REQUEST['selected'])){
-    switch($_SESSION['qpreset']){
-        case 1:
-            
-            break;
-    }
     $b64t = new base64salted($secret.$_SESSION['session'].$_SESSION['pos'].$_SESSION['chq']['chid']);
     $decode = $b64t->decode(trim($_REQUEST['selected']));
-    if((int)$decode == 1000){
-        //ok, we have the right answer!
-        $_SESSION['pos']++;
-    }else{
-        //ok wrong answer, mark it wrong for them.
-        $_SESSION['history'][$_SESSION['pos']]['wrong'][] = ceil(sqrt((int)$decode-1000))-1;
+    switch($_SESSION['qpreset']){
+        case 1:
+        case 3:
+        case 5:
+        case 6:
+            {
+                if($_SESSION['qpreset'] == 1 && $_SESSION['modes'][1] == 3){
+                    //special case
+                    //the user types in their response here, time to check it
+                }else{
+                    //do the other cases
+                    {//do the decoded number test
+                        if((int)$decode == 1000){
+                            //ok, we have the right answer!
+                            $_SESSION['pos']++;
+                        }else{
+                            //ok wrong answer, mark it wrong for them.
+                            $_SESSION['history'][$_SESSION['pos']]['wrong'][] = ceil(sqrt((int)$decode-1000))-1;
+                        }
+                    }
+                }
+            }
+            
+            break;
+        
     }
+    
+    
     if($_SESSION['pos'] > count($_SESSION['qdata'])-1){//we are past the last question
         //time to finalize and save, then redirect.
         $sql = "SELECT * FROM sectionrecords WHERE chid =".$_SESSION['chq']['chid']." AND section = " . $_SESSION['chq']['type'] . " AND userid = " . $_SESSION['id'];
@@ -68,7 +84,7 @@ if(isset($_REQUEST['selected'])){
             $nrecords[$match[$k]] = array(($k1+ 1), ($k2+ $kwrong));
         }
         //$nrecords = implode('|', $nrecords);
-        print_r($nrecords);
+       // print_r($nrecords);
         $nrecords = serialize($nrecords);
         if(!$exists){
             $sql = "INSERT INTO sectionrecords (id ,chid ,section ,userid,record) VALUES ((SELECT max(id) FROM sectionrecords) +1,'".$_SESSION['chq']['chid']."', '".$_SESSION['chq']['type']."', '".$_SESSION['id']."', '$nrecords')";

@@ -84,30 +84,7 @@ if(isset($_REQUEST['init']) || !isset($_SESSION['qdata'])){
         if($colc == array('')){
             $colc = array();
         }
-        //unset($tcola, $tcolb, $tcolc);
-        //now to determine if they want to have it shuffled or not...
-        /*
-        $trow = array();
-        for($t = 0; $t < $counta; $t++){
-            $ttrow = array();
-            if(isset($cola[$t]))
-                $ttrow[0] = $cola[$t];
-            if(isset($colb[$t]))
-                $ttrow[1] = $colb[$t];
-            if(isset($colc[$t]))
-                $ttrow[2] = $colc[$t];
-            if($ttrow != array()){
-                $tt = $t;
-                if($modes[3] == 3){
-                    $tt = $counta - $t - 1;
-                }
-                $ttrow['id'] = $tt;
-                $trow[$t] = $ttrow;
-            }
-            unset($ttrow);
-        }
-        
-        $_SESSION['adata'] = $trow;//preserve all data for text mining use.*/
+       
         $trowt = $trow;
         $cola = $tcola;
         $colb = $tcolb;
