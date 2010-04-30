@@ -267,7 +267,7 @@ function checkloadedy3(){
         case 4:
             //Ideally A leads to B leads to C, but we don't wan't the order to be messed up in the students' head so we will not do another mode
             {//however, we must have a default
-                
+                //funny, this is like the putting things in order EXCEPT that it is like sub-versions of it.
             }
             break;
         case 5:
