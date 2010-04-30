@@ -115,6 +115,7 @@ if(isset($_REQUEST['init']) || !isset($_SESSION['qdata'])){
             unset($ttrow);
         }
     }
+    
     if($modes[2] == 2){
         shuffle($trow);
     }

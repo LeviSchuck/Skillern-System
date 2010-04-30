@@ -46,30 +46,36 @@ if(isset($_REQUEST['selected'])){
                 $temp = $sentorder;
                 asort($temp);
                 $correct = false;
-                if($temp == $correct){
+                if($temp == $sentorder && count($sentorder) > 1){//sortof an area where an exploit can happen; though I'm not worried about it considering we have it encrypted
                     //we have success!
                     $correct = true;
+                }else{
+                    //we are obviously not correct, so we need to say "YEW ARE TEH WRONGNESS"
+                    $_SESSION['history'][$_SESSION['pos']]['wrong'][] = -1;
                 }
-                //if($_SESSION['qpreset'] == 2){
+                if($_SESSION['qpreset'] == 2){
                     //only 1 loop
+                    if($correct){
+                        $_SESSION['pos']=1024;
+                    }
+                    
+                }else if($_SESSION['qpreset'] == 4){
+                    //1 or more.
                     if($correct){
                         $_SESSION['pos']++;
                     }
-                    
-                /*}else if($_SESSION['qpreset'] == 4){
-                    //1 or more.
-                    
-                }*/
+                }
+                
             }
             break;
     }
     //note: after this point in time, decode is no longer used.
     
     
-    if($_SESSION['pos'] > count($_SESSION['qdata'])-1){//we are past the last question
+    if(($_SESSION['pos'] > count($_SESSION['qdata'])-1) &&//we are past the last question
+       ($_SESSION['qpreset'] != 2 )){//But we don't want to mess with the sorting presets, they are a special case
         //time to finalize and save, then redirect.
         $sql = "SELECT * FROM sectionrecords WHERE chid =".$_SESSION['chq']['chid']." AND section = " . $_SESSION['chq']['type'] . " AND userid = " . $_SESSION['id'];
-           echo $sql;
            $result = sqlite_query($sdb,$sql);
            $exists = 0;
             
@@ -163,6 +169,12 @@ function checkloadedy3(){
 
         <?php
  die();      
+    }elseif($_SESSION['qpreset'] == 2 ) {
+        //ok, see if they are correct. If they are, they should have the $_SESSION['pos'] == 1024
+        if($_SESSION['pos'] == 1024){
+            //ok, we are correctumundo here
+            
+        }
     }
 }
 ?>
