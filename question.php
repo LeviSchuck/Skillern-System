@@ -7,7 +7,7 @@ require("include/base.php");
 //$_SESSION['qpreset']; //the preset we will base our problems on.
 if(isset($_REQUEST['selected'])){
     $b64t = new base64salted($secret.$_SESSION['session'].$_SESSION['pos'].$_SESSION['chq']['chid']);
-    $decode = $b64t->decode(trim($_REQUEST['selected']));
+    
     switch($_SESSION['qpreset']){
         case 1:
         case 3:
@@ -20,6 +20,7 @@ if(isset($_REQUEST['selected'])){
                 }else{
                     //do the other cases
                     {//do the decoded number test
+                        $decode = $b64t->decode(trim($_REQUEST['selected']));
                         if((int)$decode == 1000){
                             //ok, we have the right answer!
                             $_SESSION['pos']++;
@@ -32,8 +33,37 @@ if(isset($_REQUEST['selected'])){
             }
             
             break;
-        
+        case 2:
+        case 4:
+            {//types that are like put-it-in-order
+                $sentorder = array();
+                $count = count($_REQUEST['selected']);
+                //time to decode our array
+                foreach($_REQUEST['selected'] as $item){
+                    $sentorder[] = (int)trim($b64t->decode(trim($item)));
+                }
+                //we can't go and just test for if the result(decoded) is 1000, but rather take in an array and determine if it is in order.
+                $temp = $sentorder;
+                asort($temp);
+                $correct = false;
+                if($temp == $correct){
+                    //we have success!
+                    $correct = true;
+                }
+                //if($_SESSION['qpreset'] == 2){
+                    //only 1 loop
+                    if($correct){
+                        $_SESSION['pos']++;
+                    }
+                    
+                /*}else if($_SESSION['qpreset'] == 4){
+                    //1 or more.
+                    
+                }*/
+            }
+            break;
     }
+    //note: after this point in time, decode is no longer used.
     
     
     if($_SESSION['pos'] > count($_SESSION['qdata'])-1){//we are past the last question
