@@ -116,7 +116,7 @@ background-repeat: no-repeat;
    float: left;
    position: static;
  }
- .logout,  .pcornell, .eprofl, .cuser, .vusers, .smail, .rlrec, .caled, .equot , .goback,  .fupdate, .gotonext, .qprogress{
+ .logout,  .pcornell, .eprofl, .cuser, .vusers, .smail, .rlrec, .caled, .equot , .goback,  .fupdate, .gotonext, .qprogress, .checkorder{
    display: block;
    padding-left: 28px;
    height: 24px;
@@ -452,4 +452,41 @@ padding: 3px;
 .qprogress .percentb {
    width: 180px;
    float: right;
+}
+.movehook {
+   width: 24px;
+   height: 24px;
+   background-image: url(../images/Move-icon.png);
+   background-position: center center;
+   background-repeat: no-repeat;
+   float: right;
+   margin-right: 12px;
+   margin-left: 8px;
+   margin-bottom: 8px;
+}
+.dragable {
+   padding: 3px;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+ border: 1px solid #CBB348;
+ margin-bottom: 8px;
+ background-color: #DBC358;
+}
+.dragables {
+   list-style-type: none;
+}
+.checkorder {
+   background-image: url(../images/Next-icon.png);
+   padding-left: 35px;
+   height: 40px;
+   float: right;
+   
+   font-weight: bold;
+   padding-top: 20px;
+}
+.correctness {
+   width: 300px;
+   text-align: center;
+   margin: auto;
+   overflow: auto;
 }

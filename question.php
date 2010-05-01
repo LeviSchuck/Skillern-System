@@ -1,5 +1,6 @@
 <?php
 require("include/base.php");
+$anyotherJS = '';
 //$_SESSION['qdata']; //the predetermied data to test with
 //$_SESSION['history'];
 //$_SESSION['pos']; //the position within the dataset
@@ -37,7 +38,7 @@ if(isset($_REQUEST['selected'])){
         case 4:
             {//types that are like put-it-in-order
                 $sentorder = array();
-                $count = count($_REQUEST['selected']);
+                $count = count($_REQUEST['order']);
                 //time to decode our array
                 foreach($_REQUEST['selected'] as $item){
                     $sentorder[] = (int)trim($b64t->decode(trim($item)));
@@ -52,6 +53,25 @@ if(isset($_REQUEST['selected'])){
                 }else{
                     //we are obviously not correct, so we need to say "YEW ARE TEH WRONGNESS"
                     $_SESSION['history'][$_SESSION['pos']]['wrong'][] = -1;
+                    //the ultimate evar equation
+                    $e = 2.71828182845904523536;
+                    $x = count($_SESSION['history'][$_SESSION['pos']]['wrong'])-1;
+                    $ultimate = 1.002859673095/(1+.0028697019198*pow($e,(0.16740714893327*$x)));
+                    //part 2
+                    $ultimate += -1.7987677976101*pow(10,-8)*pow($x,4)-7.122483594499*pow(10,-7)*pow($x,3)+3.711644128202*pow(10,-4)*pow($x,2)-0.02563245708658*$x+.999899999985;
+                    //part 3!
+                    $ultimate += 4.4952135427459*pow(10,-5)*pow($x,2)-0.01383588408482*$x+0.95473532652244;
+                    $ultimate = $ultimate/3;//average
+                    //now we need to find out the order so we can 
+                    $phase2 = $ultimate/($x+1);
+                    $phase3 = ($count-$lev)/$count;
+                    $phase4 = $phase2*$phase3;
+                    if(!isset($_SESSION['history'][$_SESSION['pos']]['s'])){
+                        $_SESSION['history'][$_SESSION['pos']]['s'] = array();
+                        
+                        $_SESSION['history'][$_SESSION['pos']]['s'][] = '';
+                    }
+                    
                 }
                 if($_SESSION['qpreset'] == 2){
                     //only 1 loop
@@ -173,7 +193,35 @@ function checkloadedy3(){
         //ok, see if they are correct. If they are, they should have the $_SESSION['pos'] == 1024
         if($_SESSION['pos'] == 1024){
             //ok, we are correctumundo here
+            //time to move back to setting our records.
+            //I decided not to average it as it is already too complex.
             
+            $rc =count($_SESSION['qdata']);
+            
+                if(isset($_SESSION['history'][0]['wrong'])){
+                    $kwrong = count($_SESSION['history'][$k]['wrong']);
+                }else{
+                    $kwrong = 0;
+                }
+                if(isset($records[$match[$k]][0])){
+                    $k1 = $records[$match[$k]][0];
+                }else{
+                    $k1 = 0;
+                }
+                if(isset($records[$match[$k]][1])){
+                    $k2 = $records[$match[$k]][1];
+                }else{
+                    $k2 = 0;
+                }
+                $nrecords[$match[$k]] = array(($k1+ 1), ($k2+ $kwrong));
+            
+            $nrecords = serialize($nrecords);
+            if(!$exists){
+                $sql = "INSERT INTO sectionrecords (id ,chid ,section ,userid,record) VALUES ((SELECT max(id) FROM sectionrecords) +1,'".$_SESSION['chq']['chid']."', '".$_SESSION['chq']['type']."', '".$_SESSION['id']."', '$nrecords')";
+            }else{
+                $sql = "UPDATE sectionrecords SET record = '$nrecords' WHERE chid =".$_SESSION['chq']['chid']." AND section = " . $_SESSION['chq']['type'] . " AND userid = " . $_SESSION['id'];
+            }    
+            sqlite_query($sdb,$sql);
         }
     }
 }
@@ -274,7 +322,78 @@ function checkloadedy3(){
         case 2:
             //mode detection not needed because cannot be used. no second column
             {//keep the sections separate: put in order
+                echo '<div class="prompt">Put the following in the correct order</div>';
+                $b64t = new base64salted($secret.$_SESSION['session'].$_SESSION['pos'].$_SESSION['chq']['chid']);
+                $justinited = false;
+                if(!isset($_SESSION['history'][$_SESSION['pos']]['order'])){
+                    $_SESSION['history'][$_SESSION['pos']]['count'] = count($_SESSION['qdata']);
+                    $_SESSION['history'][$_SESSION['pos']]['order'] = array();
+                    for($x = 0; $x < $_SESSION['history'][$_SESSION['pos']]['count']; $x++){
+                        $_SESSION['history'][$_SESSION['pos']]['order'][] = $x;
+                    }
+                    shuffle($_SESSION['history'][$_SESSION['pos']]['order']);
+                    $justinited = true;
+                }
+                echo '<div class="correctness"><!--where the progress bar is for how correct they are --></div>';
+                echo '<ul class="dragables">';
+                foreach($_SESSION['history'][$_SESSION['pos']]['order'] as $item){
+                    echo '<li class="dragable ">';
+                    echo '<div class="hidden data">';
+                    echo '<div class="location">'.$b64t->encode((string)$item).'</div>';
+                    echo '</div>';//end of hidden data
+                    //now the decorations
+                    echo '<div class="movehook"><!--grab it here--></div>';
+                    //now the information
+                    echo '<div class="rtext';
+                    {//section to mark the wrong ones.
+                        if(!$justinited){//we don't want to give any begining hints.
+                            
+                            
+                        }
+                    }
+                    echo '">';
+                    echo ucfirst(fixTheText($_SESSION['qdata'][$item][0]));
+                    echo '</div>';//end the rtext div
+                    
+                    echo '</li>';//end of dragable
+                }
+                echo '</ul>';
+                echo '<div class="checkorder">Check the order</div>';
+                //and set the JS to make a progress bar that is nil
+                $anyotherJS .= <<<JS
                 
+                $('.correctness').progressBar(0);
+                $('.qprogress').slideUp();
+                $('.checkorder').unbind();
+                $('.checkorder').click(function(){
+                    //$('.checkorder').unbind();
+                    $('.checkorder').slideUp(300);
+                    $('.goback').slideUp(300);
+                    var tosend = '';
+                    
+                    $('.dragable').each(function(){
+                        tosend = tosend +  '&order[]=' + $(this).find('.data').find('.location').html();
+                        
+                    });
+                    $.ajax({
+                        type: "POST",
+                        url: "question.php",
+                        data: tosend,
+                        success: function(data){
+                            
+                            $('.qworkingarea').html(data);
+                            $('.questionw').slideUp(400, function(){
+                                $('.questionw').html($('.qworkingarea').find('.qcontent').html());
+                                $('.qworkingarea').find('.qcontent').html('');
+                                $('.questionw').slideDown(600);
+                                $('.goback').fadeIn(300);
+                                $('.checkorder').slideDown(600);
+                            });
+                        }
+                    });
+                });
+                /* */
+JS;
             }
             break;
         case 3:
@@ -498,6 +617,16 @@ function onloadedy(){
             $(this).toggleClass("awrong");
             //$(this).parent().unbind();
         });
+        $('.dragables').sortable();
+        $('.dragables').disableSelection();
+        //section where we send the information(like .aresponse but for sortables)
+        
+        <?php
+        
+        if(isset($anyotherJS)){
+            echo $anyotherJS;
+        }
+        ?>
     });
 }
 function checkloadedy3(){

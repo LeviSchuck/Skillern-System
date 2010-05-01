@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="js/jquery.progressbar.min.js"></script>
 	<script type="text/javascript" src="js/jquery.ahover.js"></script>
 	<script type="text/javascript" src="js/jquery.animateToClass.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.1.custom.min.js"></script>
 	<script type="text/javascript">
 	
 	function closeWarning(){

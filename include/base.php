@@ -183,6 +183,13 @@ function enuml($num){
 }
 function fixTheText($input){
     $input = stripslashes($input);
+    $table        = array_flip(get_html_translation_table(HTML_ENTITIES));
+    $lastinput = $input;
+    $input = strtr($input, $table);//inverse the htmlentities function so that we are at ground zero again.
+    while($lastinput != $input){
+        $lastinput = $input;
+        $input = strtr($input, $table);
+    }
     $input = htmlentities($input);
     /*$input = trim(preg_replace('/\w/i', '', $input));
     $count = strlen($input);
