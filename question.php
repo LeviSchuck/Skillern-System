@@ -6,7 +6,7 @@ $anyotherJS = '';
 //$_SESSION['pos']; //the position within the dataset
 //$_SESSION['modes'];//the modes, we will mainly use mode1 in this page.
 //$_SESSION['qpreset']; //the preset we will base our problems on.
-if(isset($_REQUEST['selected'])){
+if(isset($_REQUEST['selected']) || isset($_REQUEST['order'])){
     $b64t = new base64salted($secret.$_SESSION['session'].$_SESSION['pos'].$_SESSION['chq']['chid']);
     
     switch($_SESSION['qpreset']){
@@ -40,19 +40,26 @@ if(isset($_REQUEST['selected'])){
                 $sentorder = array();
                 $count = count($_REQUEST['order']);
                 //time to decode our array
-                foreach($_REQUEST['selected'] as $item){
+                foreach($_REQUEST['order'] as $item){
                     $sentorder[] = (int)trim($b64t->decode(trim($item)));
                 }
                 //we can't go and just test for if the result(decoded) is 1000, but rather take in an array and determine if it is in order.
+                $_SESSION['history'][$_SESSION['pos']]['order'] = $sentorder;
                 $temp = $sentorder;
-                asort($temp);
+                sort($temp);
                 $correct = false;
+                print_r($sentorder);
                 if($temp == $sentorder && count($sentorder) > 1){//sortof an area where an exploit can happen; though I'm not worried about it considering we have it encrypted
                     //we have success!
                     $correct = true;
                 }else{
                     //we are obviously not correct, so we need to say "YEW ARE TEH WRONGNESS"
                     $_SESSION['history'][$_SESSION['pos']]['wrong'][] = -1;
+                    //calculate lev
+                    $ta = implode('',$sentorder);
+                    $tb = implode('',$temp);
+                    $lev = levenshtein($ta,$tb);
+                    
                     //the ultimate evar equation
                     $e = 2.71828182845904523536;
                     $x = count($_SESSION['history'][$_SESSION['pos']]['wrong'])-1;
@@ -66,12 +73,12 @@ if(isset($_REQUEST['selected'])){
                     $phase2 = $ultimate/($x+1);
                     $phase3 = ($count-$lev)/$count;
                     $phase4 = $phase2*$phase3;
-                    if(!isset($_SESSION['history'][$_SESSION['pos']]['s'])){
-                        $_SESSION['history'][$_SESSION['pos']]['s'] = array();
-                        
-                        $_SESSION['history'][$_SESSION['pos']]['s'][] = '';
-                    }
-                    
+                    $_SESSION['history']['s'][] = $phase4;
+                    $phase5 = sum($_SESSION['history']['s']);
+                    $_SESSION['history']['p'][] = $phase4;
+                    $pcount = count($_SESSION['history']['p']);
+                    $phase6 = sum(array($_SESSION['history']['p'][$pcount-2],$_SESSION['history']['p'][$pcount-1]));
+                    $anyotherJS .= "\n\t\t$('.correctness').progressBar(".(int)($phase3*100).");\n";
                 }
                 if($_SESSION['qpreset'] == 2){
                     //only 1 loop
@@ -91,64 +98,95 @@ if(isset($_REQUEST['selected'])){
     }
     //note: after this point in time, decode is no longer used.
     
-    
-    if(($_SESSION['pos'] > count($_SESSION['qdata'])-1) &&//we are past the last question
-       ($_SESSION['qpreset'] != 2 )){//But we don't want to mess with the sorting presets, they are a special case
-        //time to finalize and save, then redirect.
-        $sql = "SELECT * FROM sectionrecords WHERE chid =".$_SESSION['chq']['chid']." AND section = " . $_SESSION['chq']['type'] . " AND userid = " . $_SESSION['id'];
-           $result = sqlite_query($sdb,$sql);
-           $exists = 0;
-            
+    $iscorrect = false;
+    if(($_SESSION['pos'] > count($_SESSION['qdata'])-1)){//we are past the last question
+        
+        if($_SESSION['qpreset'] == 2 ) {
+        //ok, see if they are correct. If they are, they should have the $_SESSION['pos'] == 1024
+            if($_SESSION['pos'] == 1024){
+                $iscorrect = true;
+                //ok, we are correctumundo here
+                //time to move back to setting our records.
+                //I decided not to average it as it is already too complex.
+                
+                $rc =count($_SESSION['qdata']);
+                
+                    if(isset($_SESSION['history'][0]['wrong'])){
+                        $kwrong = count($_SESSION['history'][$k]['wrong']);
+                    }else{
+                        $kwrong = 0;
+                    }
+                    //$phase6;
+                    $nrecords = array(array(floor(100*$phase6),floor(100*(1-$phase6))));
+                    print_r($nrecords);
+                
+                $nrecords = serialize($nrecords);
+                if(!$exists){
+                    $sql = "INSERT INTO sectionrecords (id ,chid ,section ,userid,record) VALUES ((SELECT max(id) FROM sectionrecords) +1,'".$_SESSION['chq']['chid']."', '".$_SESSION['chq']['type']."', '".$_SESSION['id']."', '$nrecords')";
+                }else{
+                    $sql = "UPDATE sectionrecords SET record = '$nrecords' WHERE chid =".$_SESSION['chq']['chid']." AND section = " . $_SESSION['chq']['type'] . " AND userid = " . $_SESSION['id'];
+                }    
+                sqlite_query($sdb,$sql);
+            }
+        }else{
+            $iscorrect = true;
+            //time to finalize and save, then redirect.
+            $sql = "SELECT * FROM sectionrecords WHERE chid =".$_SESSION['chq']['chid']." AND section = " . $_SESSION['chq']['type'] . " AND userid = " . $_SESSION['id'];
+               $result = sqlite_query($sdb,$sql);
+               $exists = 0;            
                 while ($row = sqlite_fetch_array($result)) {
                     $id = $row[0];
                     $records = unserialize($row['record']);
                     print_r($records);
                     $exists = 1;
-                   
                 }
-            if (!$exists) {
-                $records = array();
-                echo "we can't get record";
-            }
-        $match = array();
-        foreach($_SESSION['qdata'] as $key=> $dat){
-            foreach($_SESSION['adata'] as $key2 => $dat2){
-                if($dat[1] == $dat2[1]){
-                    $match[$key] = $key2;
+                if (!$exists) {
+                    $records = array();
+                    echo "we can't get record";
+                }
+            $match = array();
+            foreach($_SESSION['qdata'] as $key=> $dat){
+                foreach($_SESSION['adata'] as $key2 => $dat2){
+                    if($dat[1] == $dat2[1]){
+                        $match[$key] = $key2;
+                    }
                 }
             }
-        }
-        $rcount = max(count($records),$key2);
-        $rc = max($rcount,count($_SESSION['qdata']));
-        $nrecords = $records;
-        for ($k = 0; $k < $rc; $k++) {
-            if(isset($_SESSION['history'][$k]['wrong'])){
-                $kwrong = count($_SESSION['history'][$k]['wrong']);
-            }else{
-                $kwrong = 0;
+            $rcount = max(count($records),$key2);
+            $rc = max($rcount,count($_SESSION['qdata']));
+            $nrecords = $records;
+            for ($k = 0; $k < $rc; $k++) {
+                if(isset($_SESSION['history'][$k]['wrong'])){
+                    $kwrong = count($_SESSION['history'][$k]['wrong']);
+                }else{
+                    $kwrong = 0;
+                }
+                if(isset($records[$match[$k]][0])){
+                    $k1 = $records[$match[$k]][0];
+                }else{
+                    $k1 = 0;
+                }
+                if(isset($records[$match[$k]][1])){
+                    $k2 = $records[$match[$k]][1];
+                }else{
+                    $k2 = 0;
+                }
+                $nrecords[$match[$k]] = array(($k1+ 1), ($k2+ $kwrong));
             }
-            if(isset($records[$match[$k]][0])){
-                $k1 = $records[$match[$k]][0];
+            //$nrecords = implode('|', $nrecords);
+           // print_r($nrecords);
+            $nrecords = serialize($nrecords);
+            if(!$exists){
+                $sql = "INSERT INTO sectionrecords (id ,chid ,section ,userid,record) VALUES ((SELECT max(id) FROM sectionrecords) +1,'".$_SESSION['chq']['chid']."', '".$_SESSION['chq']['type']."', '".$_SESSION['id']."', '$nrecords')";
             }else{
-                $k1 = 0;
+                $sql = "UPDATE sectionrecords SET record = '$nrecords' WHERE chid =".$_SESSION['chq']['chid']." AND section = " . $_SESSION['chq']['type'] . " AND userid = " . $_SESSION['id'];
             }
-            if(isset($records[$match[$k]][1])){
-                $k2 = $records[$match[$k]][1];
-            }else{
-                $k2 = 0;
-            }
-            $nrecords[$match[$k]] = array(($k1+ 1), ($k2+ $kwrong));
-        }
-        //$nrecords = implode('|', $nrecords);
-       // print_r($nrecords);
-        $nrecords = serialize($nrecords);
-        if(!$exists){
-            $sql = "INSERT INTO sectionrecords (id ,chid ,section ,userid,record) VALUES ((SELECT max(id) FROM sectionrecords) +1,'".$_SESSION['chq']['chid']."', '".$_SESSION['chq']['type']."', '".$_SESSION['id']."', '$nrecords')";
-        }else{
-            $sql = "UPDATE sectionrecords SET record = '$nrecords' WHERE chid =".$_SESSION['chq']['chid']." AND section = " . $_SESSION['chq']['type'] . " AND userid = " . $_SESSION['id'];
+             sqlite_query($sdb,$sql);
         }
         
-        sqlite_query($sdb,$sql);
+       
+    }
+    if($iscorrect){
         //echo sqlite_last_error($sdb);
         ?>
         <div class="qcontent">
@@ -189,40 +227,6 @@ function checkloadedy3(){
 
         <?php
  die();      
-    }elseif($_SESSION['qpreset'] == 2 ) {
-        //ok, see if they are correct. If they are, they should have the $_SESSION['pos'] == 1024
-        if($_SESSION['pos'] == 1024){
-            //ok, we are correctumundo here
-            //time to move back to setting our records.
-            //I decided not to average it as it is already too complex.
-            
-            $rc =count($_SESSION['qdata']);
-            
-                if(isset($_SESSION['history'][0]['wrong'])){
-                    $kwrong = count($_SESSION['history'][$k]['wrong']);
-                }else{
-                    $kwrong = 0;
-                }
-                if(isset($records[$match[$k]][0])){
-                    $k1 = $records[$match[$k]][0];
-                }else{
-                    $k1 = 0;
-                }
-                if(isset($records[$match[$k]][1])){
-                    $k2 = $records[$match[$k]][1];
-                }else{
-                    $k2 = 0;
-                }
-                $nrecords[$match[$k]] = array(($k1+ 1), ($k2+ $kwrong));
-            
-            $nrecords = serialize($nrecords);
-            if(!$exists){
-                $sql = "INSERT INTO sectionrecords (id ,chid ,section ,userid,record) VALUES ((SELECT max(id) FROM sectionrecords) +1,'".$_SESSION['chq']['chid']."', '".$_SESSION['chq']['type']."', '".$_SESSION['id']."', '$nrecords')";
-            }else{
-                $sql = "UPDATE sectionrecords SET record = '$nrecords' WHERE chid =".$_SESSION['chq']['chid']." AND section = " . $_SESSION['chq']['type'] . " AND userid = " . $_SESSION['id'];
-            }    
-            sqlite_query($sdb,$sql);
-        }
     }
 }
 ?>
@@ -359,10 +363,13 @@ function checkloadedy3(){
                 }
                 echo '</ul>';
                 echo '<div class="checkorder">Check the order</div>';
+                if(!isset($_REQUEST['order'])){
+                    $anyotherJS .= "\n$('.correctness').progressBar(0);\n";
+                }
                 //and set the JS to make a progress bar that is nil
                 $anyotherJS .= <<<JS
                 
-                $('.correctness').progressBar(0);
+                
                 $('.qprogress').slideUp();
                 $('.checkorder').unbind();
                 $('.checkorder').click(function(){

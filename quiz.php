@@ -190,6 +190,8 @@ if(isset($_REQUEST['init']) || !isset($_SESSION['qdata'])){
     $_SESSION['pos'] = 0;
     $_SESSION['modes'] = $modes;
     $_SESSION['qmesg'] = '';
+    $_SESSION['history']['s'] = array();
+    $_SESSION['history']['p'] = array();
 }//we have ignition!
 file_put_contents("sdata.txt", serialize($_SESSION));
 

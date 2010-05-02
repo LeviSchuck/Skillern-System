@@ -59,10 +59,10 @@ while($rowt = sqlite_fetch_array($resu)){
     }
     foreach ($records as $key => $record) {
         if(is_numeric($key)){
-        if ($record[0] + $record[1] > 0) {
-            $right += $record[0] / ($record[0] + $record[1]);
-        }
-        $rc = max($rc, $key);
+            if ($record[0] + $record[1] > 0) {
+                $right += $record[0] / ($record[0] + $record[1]);
+            }
+            $rc = max($rc, $key);
         }
     }
     $total = explode('|',$rowt['cola']);

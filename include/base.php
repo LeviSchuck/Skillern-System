@@ -261,6 +261,12 @@ $colt = $data[$current][1];//the current statement from the global.
     shuffle($posibles);
     return $posibles;
 }
-
+function sum($array = array()){
+    $total = 0;
+    foreach($array as $ar){
+        $total += (real)$ar;
+    }
+    return $total;
+}
 
 ?>
