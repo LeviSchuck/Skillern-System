@@ -64,7 +64,7 @@ if(isset($_REQUEST['selected']) || isset($_REQUEST['order'])){
                     $e = 2.71828182845904523536;
                     $x = count($_SESSION['history'][$_SESSION['pos']]['wrong'])-1;
                     $ultimate = 1.0196/(1+.0196*pow($e,(0.66562*$x)));
-                    $ultimate = sqrt($ultimate);
+                    $ultimate = sqrt(sqrt(sqrt($ultimate)));
                     //now we need to find out the order so we can 
                     $phase2 = $ultimate/($x+1);
                     $phase3 = ($count-$lev)/$count;
