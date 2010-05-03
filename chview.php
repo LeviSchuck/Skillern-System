@@ -40,12 +40,15 @@ while($rowt = sqlite_fetch_array($resu)){
     echo '</div>'."\n";
     //start edit section
     //$_SESSION['rights']
-    echo '<div class="editicon">';
-    echo $_SESSION['rights'];
-    echo '</div>';//end edit icon div
-    
+    if($_SESSION['rights'] >= 7){//assistant teacher and above.
+        echo '<div class="editicon">';
+            echo '<div class="hidden data">';
+                echo base64_encode(serialize(array($rowt[0],$rowt['type'])));
+                //no need to encrypt here, but I'll encode it for data reasons.
+            echo '</div>';//end of hidden data
+        echo '</div>';//end edit icon div
+    }
     //end edit section
-    
     $sql = "SELECT * FROM sectionrecords WHERE chid = " . $rowt['chid'] .
            " AND section = " . $rowt['type'] . " AND userid = " . $_SESSION['id']. " LIMIT 1;";
            
@@ -117,32 +120,43 @@ $(document).ready(function() {
     $('.csceperc').each(function(){
         $(this).find('.percentb').progressBar(parseInt($(this).find('.data').html()));
     });
-    
+    <?php
+    if($_SESSION['rights'] >= 7){//assistant teacher and above.
+        //put the edit JS in below.
+    ?>
     $('.goback').unbind();
-        $('.goback').click( function(){
-            $('.goback').unbind();
-            $.ajax({
-                type: "POST",
-                url: "apanel.php",
-                data: "",
-                success: function(data){
-                    $('.workingarea').html(data);
-                    $('.mcontent').slideUp(400, function(){
-                        $('.mcontent').html($('.workingarea').find('.bcontent').html());
-                        $('.workingarea').find('.bcontent').html('');
-                        $('.mcontent').slideDown(600);
-                    });
-                }
-            });
+    $('.goback').click( function(){
+        $('.goback').unbind();
+        
+    });
+    <?php
+    }
+    ?>
+    $('.goback').unbind();
+    $('.goback').click( function(){
+        $('.goback').unbind();
+        $.ajax({
+            type: "POST",
+            url: "apanel.php",
+            data: "",
+            success: function(data){
+                $('.workingarea').html(data);
+                $('.mcontent').slideUp(400, function(){
+                    $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                    $('.workingarea').find('.bcontent').html('');
+                    $('.mcontent').slideDown(600);
+                });
+            }
         });
+    });
             $('.chpquick').unbind();
              $('.chpquick').click( function(){
         var newWindow = window.open('wbch.php?c=' + $(this).find('.chid').html(), '_blank');
     newWindow.focus();
     });
-             $('.csection').unbind();
-             $('.csection').click(function(){
-                $('.csection').unbind();
+             $('.csection .cscettitle').unbind();
+             $('.csection .cscettitle').click(function(){
+                $('.csection .cscettitle').unbind();
                 $.ajax({
                 type: "POST",
                 url: "mode.php",
