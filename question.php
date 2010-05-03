@@ -63,12 +63,8 @@ if(isset($_REQUEST['selected']) || isset($_REQUEST['order'])){
                     //the ultimate evar equation
                     $e = 2.71828182845904523536;
                     $x = count($_SESSION['history'][$_SESSION['pos']]['wrong'])-1;
-                    $ultimate = 1.002859673095/(1+.0028697019198*pow($e,(0.16740714893327*$x)));
-                    //part 2
-                    $ultimate += -1.7987677976101*pow(10,-8)*pow($x,4)-7.122483594499*pow(10,-7)*pow($x,3)+3.711644128202*pow(10,-4)*pow($x,2)-0.02563245708658*$x+.999899999985;
-                    //part 3!
-                    $ultimate += 4.4952135427459*pow(10,-5)*pow($x,2)-0.01383588408482*$x+0.95473532652244;
-                    $ultimate = $ultimate/3;//average
+                    $ultimate = 1.0196/(1+.0196*pow($e,(0.66562*$x)));
+                    $ultimate = sqrt($ultimate);
                     //now we need to find out the order so we can 
                     $phase2 = $ultimate/($x+1);
                     $phase3 = ($count-$lev)/$count;
@@ -125,7 +121,17 @@ if(isset($_REQUEST['selected']) || isset($_REQUEST['order'])){
                         $kwrong = 0;
                     }
                     //$phase6;
-                    $nrecords = array(array(floor(100*$_SESSION['history']['phase6']),floor(100*(1-$_SESSION['history']['phase6']))));
+                    if($exists){
+                        $nrecords = $records;
+                    }else{
+                        $nrecords = array();
+                    }
+                    
+                    
+                    
+                    for($b = $_SESSION['history']['spos']; $b < $rc+$_SESSION['history']['spos']; $b++){
+                        $nrecords[$b] = array(floor(100*(1-$_SESSION['history']['phase6'])),floor(100*$_SESSION['history']['phase6'])); 
+                    }
                     print_r($nrecords);
                 
                 $nrecords = serialize($nrecords);

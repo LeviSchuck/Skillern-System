@@ -74,7 +74,7 @@ if(isset($_REQUEST['init']) || !isset($_SESSION['qdata'])){
                     $tcolc[$t] = $colc[$counta -$t -1];
                     }
                 }
-                $_SESSION['history']['spos'] = $counta -$thalf -1;
+                $_SESSION['history']['spos'] = $counta -$thalf;
                 $_SESSION['history']['half'] = true;
                 $tcola = array_reverse($tcola);
                 $tcolb = array_reverse($tcolb);
