@@ -4,5 +4,5 @@ sql.sql
 sdata.txt
 .gitignore
 images/.DS_Store
-
+.DS_Store
 
