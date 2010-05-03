@@ -38,6 +38,14 @@ while($rowt = sqlite_fetch_array($resu)){
     <div class="cscettitle">';
     echo $qtypes[(int)$rowt['type']]['name'];
     echo '</div>'."\n";
+    //start edit section
+    //$_SESSION['rights']
+    echo '<div class="editicon">';
+    echo $_SESSION['rights'];
+    echo '</div>';//end edit icon div
+    
+    //end edit section
+    
     $sql = "SELECT * FROM sectionrecords WHERE chid = " . $rowt['chid'] .
            " AND section = " . $rowt['type'] . " AND userid = " . $_SESSION['id']. " LIMIT 1;";
            

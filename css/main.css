@@ -490,3 +490,14 @@ padding: 3px;
    margin: auto;
    overflow: auto;
 }
+.editicon {
+   width: 24px;
+   height: 24px;
+   background-image: url(../images/Edit-icon.png);
+   background-position: center center;
+   background-repeat: no-repeat;
+   
+   margin-bottom:8px;
+   float: left;
+   margin-right: 8px;
+}
