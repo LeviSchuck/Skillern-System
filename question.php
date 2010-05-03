@@ -78,6 +78,7 @@ if(isset($_REQUEST['selected']) || isset($_REQUEST['order'])){
                     $_SESSION['history']['p'][] = $phase4;
                     $pcount = count($_SESSION['history']['p']);
                     $phase6 = sum(array($_SESSION['history']['p'][$pcount-2],$_SESSION['history']['p'][$pcount-1]));
+                    $_SESSION['history']['phase6'] = $phase6;
                     $anyotherJS .= "\n\t\t$('.correctness').progressBar(".(int)($phase3*100).");\n";
                 }
                 if($_SESSION['qpreset'] == 2){
@@ -108,7 +109,14 @@ if(isset($_REQUEST['selected']) || isset($_REQUEST['order'])){
                 //ok, we are correctumundo here
                 //time to move back to setting our records.
                 //I decided not to average it as it is already too complex.
-                
+                $sql = "SELECT * FROM sectionrecords WHERE chid =".$_SESSION['chq']['chid']." AND section = " . $_SESSION['chq']['type'] . " AND userid = " . $_SESSION['id'];
+               $result = sqlite_query($sdb,$sql);
+               $exists = 0;            
+                while ($row = sqlite_fetch_array($result)) {
+                    $id = $row[0];
+                    $records = unserialize($row['record']);
+                    $exists = 1;
+                }
                 $rc =count($_SESSION['qdata']);
                 
                     if(isset($_SESSION['history'][0]['wrong'])){
@@ -117,7 +125,7 @@ if(isset($_REQUEST['selected']) || isset($_REQUEST['order'])){
                         $kwrong = 0;
                     }
                     //$phase6;
-                    $nrecords = array(array(floor(100*$phase6),floor(100*(1-$phase6))));
+                    $nrecords = array(array(floor(100*$_SESSION['history']['phase6']),floor(100*(1-$_SESSION['history']['phase6']))));
                     print_r($nrecords);
                 
                 $nrecords = serialize($nrecords);
@@ -137,7 +145,6 @@ if(isset($_REQUEST['selected']) || isset($_REQUEST['order'])){
                 while ($row = sqlite_fetch_array($result)) {
                     $id = $row[0];
                     $records = unserialize($row['record']);
-                    print_r($records);
                     $exists = 1;
                 }
                 if (!$exists) {

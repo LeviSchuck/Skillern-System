@@ -65,6 +65,7 @@ while($rowt = sqlite_fetch_array($resu)){
             $rc = max($rc, $key);
         }
     }
+    print_r($records);
     $total = explode('|',$rowt['cola']);
     $total = count($total);
         

@@ -35,7 +35,7 @@ if(isset($_REQUEST['init']) || !isset($_SESSION['qdata'])){
         //We have a problem here...
         die("ERROR: NO EXIST, HIT HEAD WITH HAMMER");
     }
-
+    $_SESSION['history'] = array();
     {//for qdata    
         //Now we need to determine if they want to do half the chapter or not
         $tcola = array();
@@ -51,9 +51,11 @@ if(isset($_REQUEST['init']) || !isset($_SESSION['qdata'])){
         $countc = count($colc);
         $cids = enuml($counta);
         $thalf = ceil($counta/2);
-        
+        $_SESSION['history']['spos'] = 0;
+        $_SESSION['history']['half'] = false;
         if($modes[3] ==2){
                 //first half
+                $_SESSION['history']['half'] = true;
                 for($t = 0; $t < $thalf; $t++){
                     $tcola[$t] = $cola[$t];
                     if(isset($colb[$t]))
@@ -63,6 +65,7 @@ if(isset($_REQUEST['init']) || !isset($_SESSION['qdata'])){
                 }
         }elseif($modes[3] ==3){
                 //second half
+                
                 for($t = 0; $t < $thalf; $t++){
                     $tcola[$t] = $cola[$counta -$t -1];
                     if(isset($colb[$t]))
@@ -71,6 +74,8 @@ if(isset($_REQUEST['init']) || !isset($_SESSION['qdata'])){
                     $tcolc[$t] = $colc[$counta -$t -1];
                     }
                 }
+                $_SESSION['history']['spos'] = $counta -$thalf -1;
+                $_SESSION['history']['half'] = true;
                 $tcola = array_reverse($tcola);
                 $tcolb = array_reverse($tcolb);
                 $tcolc = array_reverse($tcolc);
@@ -186,12 +191,12 @@ if(isset($_REQUEST['init']) || !isset($_SESSION['qdata'])){
     }
     
     
-    $_SESSION['history'] = array();
+    
     $_SESSION['pos'] = 0;
     $_SESSION['modes'] = $modes;
     $_SESSION['qmesg'] = '';
     $_SESSION['history']['s'] = array();
-    $_SESSION['history']['p'] = array();
+    $_SESSION['history']['p'] = array(0);
 }//we have ignition!
 file_put_contents("sdata.txt", serialize($_SESSION));
 
