@@ -42,7 +42,7 @@ while($rowt = sqlite_fetch_array($resu)){
     //$_SESSION['rights']
     if($_SESSION['rights'] >= 7){//assistant teacher and above.
         echo '<div class="editicon">';
-            echo '<div class="hidden data">';
+            echo '<div class="hidden data2">';
                 echo base64_encode(serialize(array($rowt[0],$rowt['type'])));
                 //no need to encrypt here, but I'll encode it for data reasons.
             echo '</div>';//end of hidden data
@@ -160,7 +160,7 @@ $(document).ready(function() {
                 $.ajax({
                 type: "POST",
                 url: "mode.php",
-                data: "chq=" + $(this).find('.chq').html() + "&qt=" + $(this).find('.csectype').html() + "&c=<?php echo $chapter; ?>",
+                data: "chq=" + $(this).parent().find('.chq').html() + "&qt=" + $(this).parent().find('.csectype').html() + "&c=<?php echo $chapter; ?>",
                 success: function(data){
                     $('.workingarea').html(data);
                     $('.mcontent').slideUp(400, function(){

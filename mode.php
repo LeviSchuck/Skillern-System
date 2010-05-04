@@ -11,6 +11,7 @@ $resu = sqlite_query($sdb, $sql);
 while($rowt = sqlite_fetch_array($resu)){
     $qtypes[(int)$rowt[0]] = $rowt;
 }
+echo sqlite_error_string(sqlite_last_error($sdb));
 //determine options
 /*
 mode -1:
