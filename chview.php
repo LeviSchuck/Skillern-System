@@ -124,10 +124,22 @@ $(document).ready(function() {
     if($_SESSION['rights'] >= 7){//assistant teacher and above.
         //put the edit JS in below.
     ?>
-    $('.goback').unbind();
-    $('.goback').click( function(){
-        $('.goback').unbind();
-        
+    $('.editicon').unbind();
+    $('.editicon').click( function(){
+        $('.editicon').unbind();
+        $.ajax({
+            type: "POST",
+            url: "editchq.php",
+            data: "chq=" + $(this).parent().find('.chq').html() + "&qt=" + $(this).parent().find('.csectype').html() + "&c=<?php echo $chapter; ?>",
+            success: function(data){
+                $('.workingarea').html(data);
+                $('.mcontent').slideUp(400, function(){
+                    $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                    $('.workingarea').find('.bcontent').html('');
+                    $('.mcontent').slideDown(600);
+                });
+            }
+        });
     });
     <?php
     }

@@ -268,5 +268,12 @@ function sum($array = array()){
     }
     return $total;
 }
+function needrights($rightsLevel = 1){
+    $r = $rightsLevel;
+    if($_SESSION['rights'] < $r){
+        echo file_get_contents("notallowed.php");
+        die();
+    }
+}
 
 ?>

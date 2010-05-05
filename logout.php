@@ -19,6 +19,7 @@ $(document).ready(function() {
     $('.mcontent').html($('.workingarea').find('.bcontent').html());
     $('.mtitle').slideUp(300).html("You have been logged out.").slideDown(300).delay(1500).fadeOut('slow', function() {
         $('.mainwrapper').fadeOut(600, function(){
+            window.onbeforeunload = null;
             location.reload(true);
         });
     });

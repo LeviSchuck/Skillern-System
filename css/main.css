@@ -496,7 +496,7 @@ padding: 3px;
    background-image: url(../images/Edit-icon.png);
    background-position: center center;
    background-repeat: no-repeat;
-   
+   cursor: pointer!important;
    margin-bottom:8px;
    float: left;
    margin-right: 8px;
