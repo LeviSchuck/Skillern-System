@@ -40,7 +40,7 @@ while($rowt = sqlite_fetch_array($resu)){
     echo '</div>'."\n";
     //start edit section
     //$_SESSION['rights']
-    if($_SESSION['rights'] >= 7){//assistant teacher and above.
+    if(rightsSatis(7)){//assistant teacher and above.
         echo '<div class="editicon">';
             echo '<div class="hidden data2">';
                 echo base64_encode(serialize(array($rowt[0],$rowt['type'])));
@@ -121,7 +121,7 @@ $(document).ready(function() {
         $(this).find('.percentb').progressBar(parseInt($(this).find('.data').html()));
     });
     <?php
-    if($_SESSION['rights'] >= 7){//assistant teacher and above.
+    if(rightsSatis(7)){//assistant teacher and above.
         //put the edit JS in below.
     ?>
     $('.editicon').unbind();

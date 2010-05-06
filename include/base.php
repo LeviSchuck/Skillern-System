@@ -270,9 +270,16 @@ function sum($array = array()){
 }
 function needrights($rightsLevel = 1){
     $r = $rightsLevel;
-    if($_SESSION['rights'] < $r){
+    if(!rightsSatis($r)){
         echo file_get_contents("notallowed.php");
         die();
+    }
+}
+function rightsSatis($rightsLevel = 1){
+    if($_SESSION['rights'] < $r){
+        return false;
+    }else{
+        return true;
     }
 }
 
