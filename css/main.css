@@ -505,17 +505,17 @@ padding: 3px;
    background-color: #D5E269;/* original DBC358 */
 }
 .pio_lev1 {
-   background-color: #DEAF4B;
+   background-color: #DEAF4B;/* 10% red */
 }
 .pio_lev2 {
-   background-color: #EB6B30;
+   background-color: #E29C46;/* 20% */
 }
 .pio_lev3 {
-   background-color: #F63016;
+   background-color: #E77E39;/* 35% */
 }
 .pio_lev4 {
-   background-color: #F71308;
+   background-color: #F2441E;/* 65% */
 }
 .pio_lev5 {
-   background-color: #FF0000;
+   background-color: #FF0000;/* 100% */
 }

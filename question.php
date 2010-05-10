@@ -1,12 +1,14 @@
 <?php
 require("include/base.php");
 $anyotherJS = '';
+$waschecked = false;
 //$_SESSION['qdata']; //the predetermied data to test with
 //$_SESSION['history'];
 //$_SESSION['pos']; //the position within the dataset
 //$_SESSION['modes'];//the modes, we will mainly use mode1 in this page.
 //$_SESSION['qpreset']; //the preset we will base our problems on.
 if(isset($_REQUEST['selected']) || isset($_REQUEST['order'])){
+    $waschecked = true;
     $b64t = new base64salted($secret.$_SESSION['session'].$_SESSION['pos'].$_SESSION['chq']['chid']);
     
     switch($_SESSION['qpreset']){
@@ -353,10 +355,15 @@ function checkloadedy3(){
                 }
                 echo '<div class="correctness"><!--where the progress bar is for how correct they are --></div>';
                 echo '<ul class="dragables">';
+                $realpos = 0;
                 foreach($_SESSION['history'][$_SESSION['pos']]['order'] as $item){
                     echo '<li class="dragable ';
                     //Put the 
-                    
+                    if($waschecked){
+                        //ok, so we have checked at least, this means that we can now give a class like pio_lev# to the divs
+                        echo 'pio_lev';
+                        echo min(5, abs($item-$realpos));
+                    }
                     echo '">';
                     echo '<div class="hidden data">';
                     echo '<div class="location">'.$b64t->encode((string)$item).'</div>';
@@ -367,7 +374,7 @@ function checkloadedy3(){
                     echo '<div class="rtext';
                     {//section to mark the wrong ones.
                         if(!$justinited){//we don't want to give any begining hints.
-                            
+                            //I think I am fulfilling this idea above in the li
                             
                         }
                     }
@@ -376,6 +383,7 @@ function checkloadedy3(){
                     echo '</div>';//end the rtext div
                     
                     echo '</li>';//end of dragable
+                    $realpos++;
                 }
                 echo '</ul>';
                 echo '<div class="checkorder">Check the order</div>';
