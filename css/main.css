@@ -501,3 +501,21 @@ padding: 3px;
    float: left;
    margin-right: 8px;
 }
+.pio_lev0 {
+   background-color: #D5E269;/* original DBC358 */
+}
+.pio_lev1 {
+   background-color: #DEAF4B;
+}
+.pio_lev2 {
+   background-color: #EB6B30;
+}
+.pio_lev3 {
+   background-color: #F63016;
+}
+.pio_lev4 {
+   background-color: #F71308;
+}
+.pio_lev5 {
+   background-color: #FF0000;
+}

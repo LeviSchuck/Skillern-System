@@ -354,7 +354,10 @@ function checkloadedy3(){
                 echo '<div class="correctness"><!--where the progress bar is for how correct they are --></div>';
                 echo '<ul class="dragables">';
                 foreach($_SESSION['history'][$_SESSION['pos']]['order'] as $item){
-                    echo '<li class="dragable ">';
+                    echo '<li class="dragable ';
+                    //Put the 
+                    
+                    echo '">';
                     echo '<div class="hidden data">';
                     echo '<div class="location">'.$b64t->encode((string)$item).'</div>';
                     echo '</div>';//end of hidden data
