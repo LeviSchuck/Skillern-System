@@ -562,7 +562,7 @@ JS;
                             }
                             
                             //now present the question options
-                            echo $_SESSION['qdata'][$_SESSION['pos']][1];
+                            
                             foreach($_SESSION['history'][$_SESSION['pos']]['res'] as $response){
                                 echo '<div class="aresponse noselect">';
                                 echo '<div class="hidden data">';

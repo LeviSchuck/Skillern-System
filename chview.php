@@ -9,6 +9,17 @@ require("include/base.php");
 $chapter = (int)trim($_REQUEST['c']);
 $title = "Welcome to Chapter $chapter ";
 
+//lets kill our content from the questions
+if(isset($_REQUEST['killquiz'])){
+    unset($_SESSION['history']);
+    unset($_SESSION['chq']);
+    unset($_SESSION['adata']);
+    unset($_SESSION['qdata']);
+    //that should be all that matters.
+}
+
+
+
 ?>
 <div class="bcontent ">
     <div class="chtitle">
@@ -130,7 +141,7 @@ $(document).ready(function() {
         $.ajax({
             type: "POST",
             url: "editchq.php",
-            data: "chq=" + $(this).parent().find('.chq').html() + "&qt=" + $(this).parent().find('.csectype').html() + "&c=<?php echo $chapter; ?>",
+            data: "chq=" + $(this).parent().find('.chq').html() + "&qt=" + $(this).parent().find('.csectype').html() + "&c=<?php echo $chapter; ?>&init=1",
             success: function(data){
                 $('.workingarea').html(data);
                 $('.mcontent').slideUp(400, function(){

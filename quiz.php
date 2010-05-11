@@ -6,11 +6,12 @@ $modes[2] = (int)$_REQUEST['mode2'];
 $modes[3] = (int)$_REQUEST['mode3'];
 
 $chq = (int)$_REQUEST['chq'];
+/*
 if($modes[1] == null){
     $modes = array(1=> 1, 2=> 1, 3=> 3);
     $chq = 2;
     $_SESSION = unserialize(file_get_contents("eee"));
-}
+}//some old testing stuff*/
 $sql = "SELECT * FROM qtypes";
 $qtypes = array();
 $resu = sqlite_query($sdb, $sql);
@@ -249,7 +250,7 @@ function onloadedy(){
                 $.ajax({
                     type: "POST",
                     url: "chview.php",
-                    data: "c=<?php echo  $_SESSION['chq']['chid'];?>",
+                    data: "c=<?php echo  $_SESSION['chq']['chid'];?>&killquiz=1",
                     success: function(data){
                         $('.workingarea').html(data);
                         $('.mcontent').slideUp(400, function(){
