@@ -525,6 +525,7 @@ fieldset .ident {
    -moz-border-radius: 5px;
    border-radius: 5px;
    margin-left: 12px;
+   background-color: #DBC358;
 }
 .rtext2 fieldset {
    border: #CBB348 1px solid;
@@ -540,4 +541,7 @@ fieldset .ident {
 }
 .paddown8 {
    margin-top: 8px;
+}
+.paddown16 {
+   margin-top: 16px;
 }

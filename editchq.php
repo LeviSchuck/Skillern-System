@@ -43,9 +43,9 @@ if(isset($_REQUEST['init'])){
         for($t = 0; $t < $counta; $t++){
             $ttrow = array();
             if(isset($cola[$t]))
-                $ttrow[0] = $cola[$t];
+                $ttrow[0] = ucfirst($cola[$t]);
             if(isset($colb[$t]))
-                $ttrow[1] = $colb[$t];
+                $ttrow[1] = ucfirst($colb[$t]);
             if(isset($colc[$t]))
                 $ttrow[2] = $colc[$t];
             if($ttrow != array()){
@@ -96,7 +96,7 @@ if(isset($_REQUEST['init'])){
                         ?>
                     </div>
                 </div>
-                <div class="movehook paddown8"><!--grab it here--></div>
+                <div class="movehook paddown16"><!--grab it here--></div>
                 <div class="rtext2">
                     <?php
                     switch((int)$_SESSION['editor']['qtype']['preset']){
@@ -193,6 +193,10 @@ function onloadedy(){
                 }
             });
         });
+        //set up the dragging
+        $('.dragables').sortable();
+        $('.dragables').disableSelection();
+        
     });
 }
 var isloadingstill = 1;
