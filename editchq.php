@@ -88,7 +88,18 @@ if(isset($_REQUEST['init'])){
             $count = 0;
             foreach($_SESSION['editor']['qdata'] as $question){
             ?>
-            <li class="dragable2">
+            <li class="dragable<?php
+            switch((int)$_SESSION['editor']['qtype']['preset']){
+                        case 1:
+                        case 5:
+                        case 6:
+                            {
+                                echo 2;
+                            }
+                            break;
+            }
+            
+            ?>">
                 <div class="hidden data">
                     <div class="location">
                         <?php
@@ -120,12 +131,29 @@ if(isset($_REQUEST['init'])){
                             break;
                         case 2:
                             {//put in order
-                                
+                                ?>
+                    <div class="cola descr">
+                        <?php
+                        echo $question[0];
+                        ?>
+                        </div>
+                                <?php
                             }
                             break;
                         case 3:
                             {//multiple choice
-                                
+                                ?>
+                    <div class="colb ident">
+                        <?php
+                        echo $question[1];
+                        ?>
+                        </div>
+                    <div class="colc descr">
+                        <?php
+                        //stuff here
+                        ?>
+                        </div>
+                                <?php
                             }
                             break;
                         case 4:
