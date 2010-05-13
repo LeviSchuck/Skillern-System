@@ -22,7 +22,7 @@ if(isset($_REQUEST['init'])){
     $sql = "SELECT * FROM chq WHERE id = $chq";
     $res = sqlite_query($sdb, $sql);
     while($row = sqlite_fetch_array($res)){
-        $_SESSION['editor']['chq'] = $row;
+        $_SESSION['editor']['chq'] = array_map('removecrap',$row);
     }
     $_SESSION['editor']['chapter'] = $_SESSION['editor']['chq']['chid'];
     {//set up our cola-cs
@@ -33,7 +33,7 @@ if(isset($_REQUEST['init'])){
         $cola = explode('|',$_SESSION['editor']['chq']['cola']);
         $colb = explode('|',$_SESSION['editor']['chq']['colb']);
         $colc = explode('|',$_SESSION['editor']['chq']['colc']);
-        
+        $_SESSION['editor']['qtype'] = $qtypes[(int)$_SESSION['editor']['chq']['type']];
         $counta = count($cola);
         $countb = count($colb);
         $countc = count($colc);
@@ -82,6 +82,88 @@ if(isset($_REQUEST['init'])){
         ?>
         
     </div><!--end of chtitle-->
+    <div class="questionslistw">
+        <ul class="dragables">
+            <?php
+            $count = 0;
+            foreach($_SESSION['editor']['qdata'] as $question){
+            ?>
+            <li class="dragable2">
+                <div class="hidden data">
+                    <div class="location">
+                        <?php
+                        echo $count;
+                        ?>
+                    </div>
+                </div>
+                <div class="movehook paddown8"><!--grab it here--></div>
+                <div class="rtext2">
+                    <?php
+                    switch((int)$_SESSION['editor']['qtype']['preset']){
+                        case 1:
+                            {//Word->Description
+                    ?>
+                    <fieldset class="editorfieldset">
+                    <legend class="cola ident">
+                        <?php
+                        echo $question[0];
+                        ?>
+                        </legend>
+                    <div class="colb descr">
+                        <?php
+                        echo $question[1];
+                        ?>
+                        </div>
+                    </fieldset>
+                    <?php
+                            }
+                            break;
+                        case 2:
+                            {//put in order
+                                
+                            }
+                            break;
+                        case 3:
+                            {//multiple choice
+                                
+                            }
+                            break;
+                        case 4:
+                            {//sub-versions of put in order
+                                
+                            }
+                            break;
+                        case 5:
+                            {//type in word only according to definition
+                                
+                            }
+                            break;
+                        case 6:
+                            {//this is True and False
+                                
+                            }
+                            break;
+                        
+                    }
+                    
+                    ?>
+                    <!-- Col A -->
+                    
+                    <!-- Col B -->
+                    
+                    <!-- Col C -->
+                </div>
+            </li>
+            <?php
+                $count++;
+            }
+            ?>
+            
+        </ul>
+    </div><!-- End questions list wrapper -->
+    
+    
+    
     <div class="goback">
         <div class="gbtext">Go Back</div>
     </div>

@@ -519,3 +519,25 @@ padding: 3px;
 .pio_lev5 {
    background-color: #FF0000;/* 100% */
 }
+fieldset .ident {
+   border: #CBB348 1px solid;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+   margin-left: 12px;
+}
+.rtext2 fieldset {
+   border: #CBB348 1px solid;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+   background-color: #DBC358;
+}
+.dragable2 {
+   padding: 3px;
+ margin-bottom: 8px;
+ 
+}
+.paddown8 {
+   margin-top: 8px;
+}
