@@ -615,7 +615,7 @@ function onloadedy(){
             $(this).toggleClass("awrong");
             //$(this).parent().unbind();
         });
-        $('.dragables').sortable();
+        $('.dragables').sortable({ revert: true, helper: 'clone'});
         $('.dragables').disableSelection();
         //section where we send the information(like .aresponse but for sortables)
         
