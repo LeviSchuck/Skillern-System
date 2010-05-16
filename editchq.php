@@ -151,6 +151,13 @@ if(isset($_REQUEST['init'])){
                     <div class="colc descr">
                         <?php
                         //stuff here
+                        //get the text in an array
+                        //do a loop
+                        foreach($var as $var2){
+                            //detect if it is the correct answer
+                            //bold if so(CSS)
+                            
+                        }
                         ?>
                         </div>
                                 <?php
@@ -195,6 +202,9 @@ if(isset($_REQUEST['init'])){
     <div class="goback">
         <div class="gbtext">Go Back</div>
     </div>
+    <div class="savebtn">
+        <div class="svtext">Save</div>
+    </div>
 </div>
 <div class="bscript">
 <script type="text/javascript">
@@ -222,7 +232,7 @@ function onloadedy(){
             });
         });
         //set up the dragging
-        $('.dragables').sortable();
+        $('.dragables').sortable({ revert: true, helper: 'clone'});
         $('.dragables').disableSelection();
         
     });

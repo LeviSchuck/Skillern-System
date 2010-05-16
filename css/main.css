@@ -545,3 +545,13 @@ fieldset .ident {
 .paddown16 {
    margin-top: 16px;
 }
+.savebtn {
+   background-image: url(../images/Next-icon.png);
+   padding-right: 35px;
+   height: 40px;
+   float: right;
+   background-position: right center;
+   background-repeat: no-repeat;
+   font-weight: bold;
+   padding-top: 20px;
+}
