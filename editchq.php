@@ -143,7 +143,7 @@ if(isset($_REQUEST['init'])){
                         case 3:
                             {//multiple choice
                                 ?>
-                    <div class="colb ident">
+                    <div class="colb identm">
                         <?php
                         echo $question[1];
                         ?>
@@ -151,12 +151,18 @@ if(isset($_REQUEST['init'])){
                     <div class="colc descr">
                         <?php
                         //stuff here
-                        //get the text in an array
+                        $questions = explode("\n",$question[2]);
                         //do a loop
-                        foreach($var as $var2){
-                            //detect if it is the correct answer
-                            //bold if so(CSS)
-                            
+                        $qtpos = 0;
+                        foreach($questions as $que){
+                            echo '<div class="multc ';
+                            if($qtpos == (int)$question[0]){
+                                echo 'multr';
+                            }
+                            echo '">';
+                            echo fixTheText($que);
+                            echo '</div>';//end of the 
+                            $qtpos += 1;
                         }
                         ?>
                         </div>

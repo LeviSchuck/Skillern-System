@@ -555,3 +555,15 @@ fieldset .ident {
    font-weight: bold;
    padding-top: 20px;
 }
+.descr .multc {
+   padding-left: 16px;
+   padding-bottom: 3px;
+}
+.descr .multr {
+   font-style: italic;
+   font-weight: bold;
+}
+.rtext2 .identm {
+   padding-bottom: 12px;
+   font-size: 18px;
+}
