@@ -238,7 +238,11 @@ function onloadedy(){
             });
         });
         //set up the dragging
-        $('.dragables').sortable({ revert: true, helper: 'clone'});
+        $('.dragables').sortable({ revert: true,
+                                 helper: 'clone',
+                                 handle : '.movehook',
+                                 containment: '.mcontent'
+                                 });
         $('.dragables').disableSelection();
         
     });

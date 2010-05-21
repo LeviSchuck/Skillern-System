@@ -10,6 +10,10 @@
 	<script type="text/javascript" src="js/jquery.ahover.js"></script>
 	<script type="text/javascript" src="js/jquery.animateToClass.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.8.1.custom.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easing-1.3.pack.js"></script>
+	
+	<script type="text/javascript" src="js/jquery.fancybox-1.3.1.pack.js"></script>
+	<script type="text/javascript" src="jquery.mousewheel-3.0.2.pack.js"></script>
 	<script type="text/javascript">
 	
 	function closeWarning(){
@@ -22,6 +26,7 @@
         <!-- Base information like CSS -->
         <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
 	<link rel="stylesheet" type="text/css" href="css/main.css" media="print" />
+	<link rel="stylesheet" type="text/css" href="css/jquery.fancybox-1.3.1.css" media="print" />
         <!-- end Base information -->
 </head>
 <body>
