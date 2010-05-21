@@ -568,9 +568,9 @@ fieldset .ident {
    padding-bottom: 12px;
    font-size: 18px;
 }
-a .editlink {
-   font-style: normal;
-   font-weight: normal;
-   text-decoration: none;
+a {
+   font-style: normal!important;
+   font-weight: normal!important;
+   text-decoration: none!important;
    color: #000!important;
 }

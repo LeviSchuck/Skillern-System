@@ -109,6 +109,7 @@ if(isset($_REQUEST['init'])){
                 </div>
                 <div class="movehook paddown16"><!--grab it here--></div>
                 <div class="rtext2">
+                    
                     <?php
                     switch((int)$_SESSION['editor']['qtype']['preset']){
                         case 1:
@@ -116,14 +117,18 @@ if(isset($_REQUEST['init'])){
                     ?>
                     <fieldset class="editorfieldset">
                     <legend class="cola ident">
+                        <a href="fancychq.php?&chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=0" class="fancy">
                         <?php
                         echo $question[0];
                         ?>
+                        </a>
                         </legend>
                     <div class="colb descr">
+                        <a href="fancychq.php?&chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=1" class="fancy">
                         <?php
                         echo $question[1];
                         ?>
+                        </a>
                         </div>
                     </fieldset>
                     <?php
@@ -244,6 +249,13 @@ function onloadedy(){
                                  containment: '.mcontent'
                                  });
         $('.dragables').disableSelection();
+        if(!$('.fancy').hasClass('fancybox')){
+        $('.fancy').fancybox({
+				'titleShow'		: false,
+				'transitionIn'	: 'elastic',
+				'transitionOut'	: 'elastic'
+			});
+        }
         
     });
 }
