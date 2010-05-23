@@ -165,6 +165,8 @@ if(isset($_REQUEST['init'])){
                                 echo 'multr';
                             }
                             echo '">';
+                            echo '<div class="editmultletter">'.chr(ord("A")+$qtpos).'</div>';
+                            //just a notice here that I should in the future implement something so it knows to do stuff like "AA, AB, etc."
                             echo fixTheText($que);
                             echo '</div>';//end of the 
                             $qtpos += 1;

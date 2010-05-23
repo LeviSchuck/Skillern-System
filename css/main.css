@@ -574,3 +574,7 @@ a {
    text-decoration: none!important;
    color: #000!important;
 }
+.editmultletter {
+   display: inline;
+   padding-right: 8px;
+}
