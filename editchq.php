@@ -253,7 +253,7 @@ function onloadedy(){
         $('.dragables').disableSelection();
         if(!$('.fancy').hasClass('fancybox')){
         $('.fancy').fancybox({
-				'titleShow'		: false,
+				'titleShow'	: false,
 				'transitionIn'	: 'elastic',
 				'transitionOut'	: 'elastic'
 			});

@@ -83,6 +83,12 @@ padding-top: 3px;
 vertical-align:top;
 width:160px;
  }
+ .fright {
+   float: right;
+ }
+ .fleft {
+   float: left;
+ }
  .centered {
    text-align: center;
  }
@@ -413,6 +419,7 @@ margin-right: 16px;
    font-weight: bold;
    font-size: 24px;
  }
+ 
  .prompt {
    margin-left: 16px;
    font-weight: bold;
@@ -538,7 +545,6 @@ fieldset .ident {
 .dragable2 {
    padding: 3px;
  margin-bottom: 8px;
- 
 }
 .paddown8 {
    margin-top: 8px;
@@ -578,3 +584,19 @@ a {
    display: inline;
    padding-right: 8px;
 }
+.fancyframe {
+   height: 140px;
+   width: 720px;
+   overflow: hidden;
+}
+.savefancy {
+   background-image:url(../images/Save-icon.png);
+   padding-left: 40px;
+   padding-right: 4px;
+   height: 32px;
+   font-weight: bold;
+   font-size: 24px;
+   background-repeat: no-repeat;
+   float: right;
+   text-shadow: 0 0 4px #999;
+ }
