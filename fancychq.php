@@ -11,13 +11,37 @@ echo '</textarea>';
 <script type="text/javascript">
     $(document).ready(function() {
        $('.savefancy').click(function(){
-            $('.dragable2').each(function(){
-                if($(this).find(".data").find('.location').text() == "<?php echo (int)$_REQUEST['sub'];?>"){
-                    alert('found');
-                    $(this).find(".col<?php echo chr(ord('a')+ (int)$_REQUEST['col']); ?>").find('.fancy').text($('.fancyframe').find('.textual').text());
-                    //$.fancybox.close();
+            $('.savefancy').slideUp(300);
+            $('.fancyframe').find('.textual').attr('readonly', 'readonly');
+            //start ajax send
+            $.ajax({
+                url: "savechq.php",
+                global: false,
+                type: "POST",
+                data: ({data : $('.fancyframe').find('.textual').val(),
+                       sub : <?php echo (int)$_REQUEST['sub'];?>,
+                       col : <?php echo (int)$_REQUEST['col'];?>,
+                       chqid : <?php echo $_SESSION['editor']['chq']['ID']; ?>}),
+                success: function(msg){
+                   if(msg == "good"){
+                    $('.dragable2').each(function(){
+                        if(parseInt($(this).find(".data").find('.location').text()) == <?php echo (int)$_REQUEST['sub'];?>){
+                            $(this).find(".col<?php echo chr(ord('a')+ (int)$_REQUEST['col']); ?>").find('.fancy').text($('.fancyframe').find('.textual').val());
+                            $.fancybox.close();
+                        }
+                    });
+                   }else{
+                    alert("There seemed to have been an error: " + msg);
+                    $('.savefancy').slideDown(300);
+                    $('.fancyframe').find('.textual').attr('readonly', '');
+                   }
+                },
+                error : function(msg){
+                    alert("There seemed to have been an error: " + msg.statusText);
+                    $('.savefancy').slideDown(300);
+                    $('.fancyframe').find('.textual').attr('readonly', '');
                 }
-                });
-       });
+            });
+        });
     });
 </script>
