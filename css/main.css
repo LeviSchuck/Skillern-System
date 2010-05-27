@@ -600,3 +600,8 @@ a {
    float: right;
    text-shadow: 0 0 4px #999;
  }
+ .textual {
+   height:110px;
+   width:720px;
+   display: block;
+ }
