@@ -1,5 +1,6 @@
 <?php
 require("include/base.php");
+needrights(7);//need to be at least a TA
 $data = stripslashes($_POST['data']);
 $sub = (int)trim($_POST['sub']);
 $col = (int)trim($_POST['col']);

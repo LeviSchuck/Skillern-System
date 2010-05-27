@@ -117,14 +117,17 @@ if(isset($_REQUEST['init'])){
                     ?>
                     <fieldset class="editorfieldset">
                     <legend class="cola ident">
-                        <a href="fancychq.php?&chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=0" class="fancy">
+                        <span class="hidden data">chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=0</span>
+                        <a class="fancy">
                         <?php
                         echo $question[0];
                         ?>
                         </a>
                         </legend>
                     <div class="colb descr">
-                        <a href="fancychq.php?&chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=1" class="fancy">
+                        <div class="data hidden">chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=1</div>
+                            
+                        <a class="fancy">
                         <?php
                         echo $question[1];
                         ?>
@@ -149,11 +152,17 @@ if(isset($_REQUEST['init'])){
                             {//multiple choice
                                 ?>
                     <div class="colb identm">
+                    <div class="hidden data">chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=1</div>
+                        <a class="fancy">
                         <?php
                         echo $question[1];
                         ?>
+                        </a>
                         </div>
                     <div class="colc descr">
+                        <div class="hidden data">&chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=2</div>
+                        
+                    <a class="fancy">
                         <?php
                         //stuff here
                         $questions = explode("\n",$question[2]);
@@ -172,6 +181,7 @@ if(isset($_REQUEST['init'])){
                             $qtpos += 1;
                         }
                         ?>
+                        </a>
                         </div>
                                 <?php
                             }
@@ -252,11 +262,24 @@ function onloadedy(){
                                  });
         $('.dragables').disableSelection();
         if(!$('.fancy').hasClass('fancybox')){
-        $('.fancy').fancybox({
-				'titleShow'	: false,
-				'transitionIn'	: 'elastic',
-				'transitionOut'	: 'elastic'
-			});
+            $('.fancy').click(function(){
+                $.fancybox.showActivity();
+                $.ajax({
+                   type     :   "POST",
+                   cache    : false,
+                   url  :   "fancychq.php",
+                   data :   $(this).parent().find('.data').text(),
+                   success: function(data){
+                    $.fancybox(data,{
+                                    'titleShow'	: false,
+                                    'transitionIn'	: 'elastic',
+                                    'transitionOut'	: 'elastic',
+                                    
+                            });
+                   }
+                });
+            
+            });
         }
         
     });

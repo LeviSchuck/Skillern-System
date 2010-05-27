@@ -21,7 +21,8 @@ echo '</textarea>';
                 data: ({data : $('.fancyframe').find('.textual').val(),
                        sub : <?php echo (int)$_REQUEST['sub'];?>,
                        col : <?php echo (int)$_REQUEST['col'];?>,
-                       chqid : <?php echo $_SESSION['editor']['chq']['ID']; ?>}),
+                       chqid : <?php echo $_SESSION['editor']['chq']['ID']; ?>,
+                       qtype : <?php echo (int)$_SESSION['editor']['qtype']['preset']; ?>}),
                 success: function(msg){
                    if(msg == "good"){
                     $('.dragable2').each(function(){
