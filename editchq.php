@@ -117,7 +117,7 @@ if(isset($_REQUEST['init'])){
                     ?>
                     <fieldset class="editorfieldset">
                     <legend class="cola ident">
-                        <span class="hidden data">chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=0</span>
+                        <span class="hidden data">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&col=0</span>
                         <a class="fancy">
                         <?php
                         echo $question[0];
@@ -125,7 +125,7 @@ if(isset($_REQUEST['init'])){
                         </a>
                         </legend>
                     <div class="colb descr">
-                        <div class="data hidden">chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=1</div>
+                        <div class="data hidden">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&col=1</div>
                             
                         <a class="fancy">
                         <?php
@@ -152,7 +152,7 @@ if(isset($_REQUEST['init'])){
                             {//multiple choice
                                 ?>
                     <div class="colb identm">
-                    <div class="hidden data">chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=1</div>
+                    <div class="hidden data">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&col=1</div>
                         <a class="fancy">
                         <?php
                         echo $question[1];
@@ -160,7 +160,7 @@ if(isset($_REQUEST['init'])){
                         </a>
                         </div>
                     <div class="colc descr">
-                        <div class="hidden data">&chq=<?php echo $question['id'];?>&sub=<?php echo $count; ?>&col=2</div>
+                        <div class="hidden data">&chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&col=2</div>
                         
                     <a class="fancy">
                         <?php

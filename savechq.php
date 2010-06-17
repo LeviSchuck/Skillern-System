@@ -24,9 +24,10 @@ $sql = "UPDATE chq SET 'col".(chr(ord('a')+$col))."' = '".sqlite_escape_string(i
 $result = sqlite_query($sdb,$sql);
 if(sqlite_last_error($sdb) != 0){
     echo sqlite_error_string(sqlite_last_error($sdb));
-    echo "\n$sql";
+    //echo "\n$sql";
 }else{
     echo "good";//!
+    $_SESSION['editor']['qdata'][$sub][$col] = $data;
 }
 
 ?>
