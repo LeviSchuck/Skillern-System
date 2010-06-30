@@ -226,7 +226,10 @@ if(isset($_REQUEST['init'])){
         <div class="gbtext">Go Back</div>
     </div>
     <div class="savebtn">
-        <div class="svtext">Save</div>
+        <div class="svtext noselect">Save</div>
+    </div>
+    <div class="addbtn">
+        <div class="addtext noselect">Add</div>
     </div>
 </div>
 <div class="bscript">

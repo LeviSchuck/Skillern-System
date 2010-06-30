@@ -562,6 +562,17 @@ fieldset .ident {
    font-weight: bold;
    padding-top: 20px;
 }
+.addbtn {
+   background-image: url(../images/Add-icon.png);
+   padding-right: 35px;
+   height: 40px;
+   float: right;
+   background-position: right center;
+   background-repeat: no-repeat;
+   font-weight: bold;
+   padding-top: 20px;
+   margin-right: 14px;
+}
 .descr .multc {
    padding-left: 16px;
    padding-bottom: 3px;
