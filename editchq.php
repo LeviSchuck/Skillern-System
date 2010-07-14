@@ -231,6 +231,10 @@ if(isset($_REQUEST['init'])){
     <div class="addbtn">
         <div class="addtext noselect">Add</div>
     </div>
+    <ul id="myMenu" class="contextMenu">
+	<li class="edit"><a href="#edit">Edit</a></li>
+	<li class="delete"><a href="#delete">Delete</a></li>
+    </ul>
 </div>
 <div class="bscript">
 <script type="text/javascript">
@@ -257,6 +261,72 @@ function onloadedy(){
                 }
             });
         });
+        $('.addbtn').unbind();
+        $('.addbtn').click( function(){
+            $('.goback, .addbtn, .savebtn').unbind();
+            $.ajax({
+                type: "POST",
+                url: "augchq.php",
+                data: "chqid=<?php
+                echo (int)$_REQUEST['chq'];
+                ?>&qtype=<?php echo (int)$_SESSION['editor']['qtype']['preset']; ?>",
+                success: function(data){
+                    if(data.length < 5){
+                        var oldtitledata = $('.mtitle').html();
+                        $('.mtitle').stop(true, true);
+                        $('.mtitle').slideUp(200, function(){
+                            
+                            $('.mtitle').html('Reloading Data, Please Wait.');
+                            $('.mtitle').slideDown(400); 
+                        });
+                       $.ajax({
+                            type: "POST",
+                            url: "editchq.php",
+                            data: "chq=<?php echo $_POST['chq']; ?>&qt=<?php echo $_POST['qt']; ?>&c=<?php echo $_POST['c']; ?>&init=1",
+                            success: function(data2){
+                                $('.workingarea').html(data2);
+                                $('.mcontent').slideUp(400, function(){
+                                    $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                                    $('.workingarea').find('.bcontent').html('');
+                                    $('.mcontent').slideDown(600, function(){
+                                        var x = $('.addbtn').offset().top - 100; // 100 provides buffer in viewport
+                                        $('html,body').animate({scrollTop: x}, 500);
+
+                                    });
+                                    $('.mtitle').stop(true, true);
+                                    $('.mtitle').slideUp(200, function(){
+                                        $('.mtitle').html(oldtitledata);
+                                        $('.mtitle').slideDown(400); 
+                                    });
+                                });
+                                
+                            }
+                        });
+                    }else{
+                        $('.mcontent').html(data);
+                    }
+                }
+            });
+        });
+        //set up menus
+        $(".dragable, .dragable2").contextMenu({
+        	menu: 'myMenu'
+            },
+            function(action, el, pos) {
+		switch(action){
+                    case "edit":
+                        {
+                            alert('Just click on the area you want to edit, and it will open up.');
+                        }
+                        break;
+                    case "delete":
+                        {
+                            var elloc = $(el).find('.data').find('location').text();
+                            
+                        }
+                        break;
+                }
+	});
         //set up the dragging
         $('.dragables').sortable({ revert: true,
                                  helper: 'clone',

@@ -276,11 +276,21 @@ function needrights($rightsLevel = 1){
     }
 }
 function rightsSatis($rightsLevel = 1){
-    if($_SESSION['rights'] < $r){
-        return false;
+    if(isset($_SESSION['rights'])){
+        if($_SESSION['rights'] < $rightsLevel){
+            return false;
+        }else{
+            return true;
+        }
     }else{
-        return true;
+        return false;
     }
 }
+
+//time to see if the person has a name. Otherwise, they need to go back to login page.
+/*if(!isset($_SESSION['session'])){
+    //time to redirect them to login.
+    
+}*/
 
 ?>

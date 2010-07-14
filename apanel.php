@@ -1,5 +1,6 @@
 <?php
 require("include/base.php");
+needrights(1);//at least a student.
 $title = "Welcome and study well";
 ?>
 <div class="bcontent">

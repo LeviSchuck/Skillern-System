@@ -26,8 +26,8 @@ echo '</textarea>';
                 success: function(msg){
                    if(msg == "good"){
                     alert('looking for ident: <?php echo (int)$_REQUEST['sub'];?>');
-                    $('.dragable2').each(function(){
-                        alert('Looking at: ' + $(this).find(".data").find('.location').text());
+                    $('.dragable2, .dragable').each(function(){
+                        //alert('Looking at: ' + $(this).find(".data").find('.location').text());
                         if(parseInt($(this).find(".data").find('.location').text()) == <?php echo (int)$_REQUEST['sub'];?>){
                             alert('found something.');
                             $(this).find(".col<?php echo chr(ord('a')+ (int)$_REQUEST['col']); ?>").find('.fancy').text($('.fancyframe').find('.textual').val());
