@@ -5,8 +5,8 @@ needrights(7);//need to be at least a TA
 
 //get CHQ information
 //the CHQID, the type of chq etc.
-$chqid = 20;//(int)trim($_POST['chqid']);
-$qtype = 1;//(int)trim($_POST['qtype']);
+$chqid = (int)trim($_POST['chqid']);
+$qtype = (int)trim($_POST['qtype']);
 
 //get current data
 $sql = "SELECT * FROM chq WHERE id = $chqid";
