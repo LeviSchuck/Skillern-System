@@ -241,88 +241,150 @@ if(isset($_REQUEST['init'])){
 
 function onloadedy(){
     $(document).ready(function() {
+        var allgoodtoclick = true;
         //do what ever in here
         $('.goback').unbind();
         $('.goback').click( function(){
-            $('.goback').unbind();
-            $.ajax({
-                type: "POST",
-                url: "chview.php",
-                data: "c=<?php
-                echo $_SESSION['editor']['chapter'];
-                ?>",
-                success: function(data){
-                    $('.workingarea').html(data);
-                    $('.mcontent').slideUp(400, function(){
-                        $('.mcontent').html($('.workingarea').find('.bcontent').html());
-                        $('.workingarea').find('.bcontent').html('');
-                        $('.mcontent').slideDown(600);
-                    });
-                }
-            });
+            if(allgoodtoclick){
+                allgoodtoclick = false;
+                $('.goback').unbind();
+                $.ajax({
+                    type: "POST",
+                    url: "chview.php",
+                    data: "c=<?php
+                    echo $_SESSION['editor']['chapter'];
+                    ?>",
+                    success: function(data){
+                        $('.workingarea').html(data);
+                        $('.mcontent').slideUp(400, function(){
+                            $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                            $('.workingarea').find('.bcontent').html('');
+                            $('.mcontent').slideDown(600);
+                            allgoodtoclick = true;
+                        });
+                        
+                    }
+                });
+            }
         });
         $('.addbtn').unbind();
         $('.addbtn').click( function(){
-            $('.goback, .addbtn, .savebtn').unbind();
-            $.ajax({
-                type: "POST",
-                url: "augchq.php",
-                data: "chqid=<?php
-                echo (int)$_REQUEST['chq'];
-                ?>&qtype=<?php echo (int)$_SESSION['editor']['qtype']['preset']; ?>",
-                success: function(data){
-                    if(data.length < 5){
-                        var oldtitledata = $('.mtitle').html();
-                        $('.mtitle').stop(true, true);
-                        $('.mtitle').slideUp(200, function(){
-                            
-                            $('.mtitle').html('Reloading Data, Please Wait.');
-                            $('.mtitle').slideDown(400); 
-                        });
-                       $.ajax({
-                            type: "POST",
-                            url: "editchq.php",
-                            data: "chq=<?php echo $_POST['chq']; ?>&qt=<?php echo $_POST['qt']; ?>&c=<?php echo $_POST['c']; ?>&init=1",
-                            success: function(data2){
-                                $('.workingarea').html(data2);
-                                $('.mcontent').slideUp(400, function(){
-                                    $('.mcontent').html($('.workingarea').find('.bcontent').html());
-                                    $('.workingarea').find('.bcontent').html('');
-                                    $('.mcontent').slideDown(600, function(){
-                                        var x = $('.addbtn').offset().top - 100; // 100 provides buffer in viewport
-                                        $('html,body').animate({scrollTop: x}, 500);
-
-                                    });
-                                    $('.mtitle').stop(true, true);
-                                    $('.mtitle').slideUp(200, function(){
-                                        $('.mtitle').html(oldtitledata);
-                                        $('.mtitle').slideDown(400); 
-                                    });
-                                });
+            if(allgoodtoclick){
+                allgoodtoclick = false;
+                $.ajax({
+                    type: "POST",
+                    url: "augchq.php",
+                    data: "chqid=<?php
+                    echo (int)$_REQUEST['chq'];
+                    ?>&qtype=<?php echo (int)$_SESSION['editor']['qtype']['preset']; ?>",
+                    success: function(data){
+                        if(data.length < 5){
+                            var oldtitledata = $('.mtitle').html();
+                            $('.mtitle').stop(true, true);
+                            $('.mtitle').slideUp(200, function(){
                                 
-                            }
-                        });
-                    }else{
-                        $('.mcontent').html(data);
+                                $('.mtitle').html('Reloading Data, Please Wait.');
+                                $('.mtitle').slideDown(400); 
+                            });
+                           $.ajax({
+                                type: "POST",
+                                url: "editchq.php",
+                                data: "chq=<?php echo $_POST['chq']; ?>&qt=<?php echo $_POST['qt']; ?>&c=<?php echo $_POST['c']; ?>&init=1",
+                                success: function(data2){
+                                    $('.workingarea').html(data2);
+                                    $('.mcontent').slideUp(400, function(){
+                                        $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                                        $('.workingarea').find('.bcontent').html('');
+                                        $('.mcontent').slideDown(600, function(){
+                                            var x = $('.addbtn').offset().top - 100; // 100 provides buffer in viewport
+                                            $('html,body').animate({scrollTop: x}, 500);
+                                            allgoodtoclick = true;
+                                        });
+                                        $('.mtitle').stop(true, true);
+                                        $('.mtitle').slideUp(200, function(){
+                                            $('.mtitle').html(oldtitledata);
+                                            $('.mtitle').slideDown(400); 
+                                        });
+                                    });
+                                    
+                                }
+                            });
+                        }else{
+                            $('.mcontent').html(data);
+                        }
                     }
-                }
-            });
+                });
+            }
         });
         //set up menus
-        $(".dragable, .dragable2").contextMenu({
+        $(".fancy").contextMenu({
         	menu: 'myMenu'
             },
             function(action, el, pos) {
 		switch(action){
                     case "edit":
                         {
-                            alert('Just click on the area you want to edit, and it will open up.');
+                            $(el).trigger('click');
                         }
                         break;
                     case "delete":
                         {
-                            var elloc = $(el).find('.data').find('location').text();
-                            
+                            var foundit = false;
+                            var par = $(el).parent();
+                            var foundlevels = 0;
+                            while(!foundit && foundlevels < 10){
+                                if($(par).hasClass('dragable') || $(par).hasClass('dragable2')){
+                                    foundit = true;//found what we are seacrhing for
+                                }else{
+                                    par = $(par).parent();
+                                    foundlevels++;
+                                }
+                            }
+                            var elloc = $(par).find('.data').find('.location').text();
+                            $('.goback, .addbtn, .savebtn, .fancy').unbind();
+                            $.ajax({
+                                type: "POST",
+                                url: "delchq.php",
+                                data: "chqid=<?php
+                                echo (int)$_REQUEST['chq'];
+                                ?>&qtype=<?php echo (int)$_SESSION['editor']['qtype']['preset']; ?>&del=" + elloc,
+                                success: function(data){
+                                    if(data.length < 5){
+                                        var oldtitledata = $('.mtitle').html();
+                                        $('.mtitle').stop(true, true);
+                                        $('.mtitle').slideUp(200, function(){
+                                            $('.mtitle').html('Reloading Data, Please Wait.');
+                                            $('.mtitle').slideDown(400); 
+                                        });
+                                       $.ajax({
+                                            type: "POST",
+                                            url: "editchq.php",
+                                            data: "chq=<?php echo $_POST['chq']; ?>&qt=<?php echo $_POST['qt']; ?>&c=<?php echo $_POST['c']; ?>&init=1",
+                                            success: function(data2){
+                                                $('.workingarea').html(data2);
+                                                $('.mcontent').slideUp(400, function(){
+                                                    $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                                                    $('.workingarea').find('.bcontent').html('');
+                                                    $('.mcontent').slideDown(600, function(){
+                                                        var x = $('.addbtn').offset().top - 100; // 100 provides buffer in viewport
+                                                        $('html,body').animate({scrollTop: x}, 500);
+                
+                                                    });
+                                                    $('.mtitle').stop(true, true);
+                                                    $('.mtitle').slideUp(200, function(){
+                                                        $('.mtitle').html(oldtitledata);
+                                                        $('.mtitle').slideDown(400); 
+                                                    });
+                                                });
+                                                
+                                            }
+                                        });
+                                    }else{
+                                        $('.mcontent').html(data);
+                                    }
+                                }
+                            });
+
                         }
                         break;
                 }
