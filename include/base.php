@@ -287,10 +287,43 @@ function rightsSatis($rightsLevel = 1){
     }
 }
 
-//time to see if the person has a name. Otherwise, they need to go back to login page.
-/*if(!isset($_SESSION['session'])){
-    //time to redirect them to login.
-    
-}*/
+function defaultcols($qtype){
+    $cols = array();
+    switch($qtype){
+        case 1:
+            {//Word->Description
+                $cols=array('Define','Description');//defaults
+            }
+            break;
+        case 2:
+            {//put in order
+                $cols=array('Event');
+            }
+            break;
+        case 3:
+            {//multiple choice
+                $cols=array(0,'Prompt',"Choice A\nChoiceB");
+            }
+            break;
+        case 4:
+            {//sub-versions of put in order
+                $cols=array();
+            }
+            break;
+        case 5:
+            {//type in word only according to definition
+                $cols=array('Define','Description');
+                
+            }
+            break;
+        case 6:
+            {//this is True and False
+                $cols=array(0,'Description');
+            }
+            break;
+        
+    }
+    return $cols;
+}
 
 ?>

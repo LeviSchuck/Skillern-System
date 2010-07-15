@@ -3,6 +3,9 @@ require("include/base.php");
 //we still should be able to depend on our session...
 echo '<div class="fancyframe">';
 echo '<textarea class="textual"  cols="100" rows="5">';
+if(!isset($_SESSION['editor']['qdata'][(int)$_REQUEST['sub']][(int)$_REQUEST['col']])){
+    echo "You need to press the Refresh button. Your session has unfortunately ended.";
+}
 echo $_SESSION['editor']['qdata'][(int)$_REQUEST['sub']][(int)$_REQUEST['col']];
 echo '</textarea>';
 

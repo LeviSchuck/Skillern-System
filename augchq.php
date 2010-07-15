@@ -21,41 +21,7 @@ unset($info[0],$info[1],$info[2],$info[3],$info[4],$info[5],$info[6]);
 
 //detect how many columns to use based on chq type
 //augment array with 1 row on all columns that count.
-$cols = array();
-switch($qtype){
-    case 1:
-        {//Word->Description
-            $cols=array('Define','Description');//defaults
-        }
-        break;
-    case 2:
-        {//put in order
-            $cols=array('Event');
-        }
-        break;
-    case 3:
-        {//multiple choice
-            $cols=array(0,'Prompt',"Choice A\nChoiceB");
-        }
-        break;
-    case 4:
-        {//sub-versions of put in order
-            $cols=array();
-        }
-        break;
-    case 5:
-        {//type in word only according to definition
-            $cols=array('Define','Description');
-            
-        }
-        break;
-    case 6:
-        {//this is True and False
-            $cols=array(0,'Description');
-        }
-        break;
-    
-}
+$cols = defaultcols($qtype);
 $count = count($cols);
 for($col = 0; $col < $count; $col++){
     $tempcol = explode("|",$info['col'.chr(ord('a')+$col)]);

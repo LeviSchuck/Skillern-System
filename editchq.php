@@ -417,6 +417,90 @@ function onloadedy(){
             });
         }
         
+        $('.savebtn').unbind();
+        $('.savebtn').click(function(){
+            if(allgoodtoclick){
+                allgoodtoclick = false;
+                $('.mtitle').slideUp(200, function(){
+                                $('.mtitle').html('Processing, Please Wait.');
+                                $('.mtitle').slideDown(400); 
+                            });
+                $('.questionslistw, .goback, .addbtn').slideUp(400);
+                var numbahs = '';//the numbers string
+                $('.dragable, .dragable2').each(function(){
+                    numbahs = numbahs + "no[]=" + $.trim($(this).find('.data').find('.location').text())+"&";
+                });
+                
+                $.ajax({
+                    type: "POST",
+                    url: "savechqs.php",
+                    data: "chqid=<?php
+                    echo (int)$_REQUEST['chq'];
+                    ?>&qtype=<?php echo (int)$_SESSION['editor']['qtype']['preset']; ?>&" + numbahs,
+                    success: function(data){
+                        if(data.length < 5){
+                            $('.mtitle').slideUp(200, function(){
+                                $('.mtitle').html('Saved Data, Please Wait.');
+                                $('.mtitle').slideDown(400); 
+                            });
+                            
+                            $.ajax({
+                                type: "POST",
+                                url: "chview.php",
+                                data: "c=<?php
+                                echo $_SESSION['editor']['chapter'];
+                                ?>",
+                                success: function(data){
+                                    $('.workingarea').html(data);
+                                    $('.mcontent').slideUp(400, function(){
+                                        $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                                        $('.workingarea').find('.bcontent').html('');
+                                        $('.mcontent').slideDown(600);
+                                        allgoodtoclick = true;
+                                    });
+                                    $('.questionslistw, .goback, .addbtn, .savebtn').unbind();
+                                },
+                                error: function(){
+                                    $('.questionslistw, .goback, .addbtn').slideDown(400);
+                                    $.ajax({
+                                        url  :   "errorpage.php",
+                                        success: function(data){
+                                            $.fancybox(data,{
+                                                'titleShow'	: false,
+                                                'transitionIn'	: 'elastic',
+                                                'transitionOut'	: 'elastic',
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }else{
+                            $('.questionslistw, .goback, .addbtn').slideDown(400);
+                            $.fancybox(data,{
+                                'titleShow'     : false,
+                                'transitionIn'  : 'elastic',
+                                'transitionOut' : 'elastic',
+                            });
+                        }
+                        
+                    },
+                    error: function(){
+                        $('.questionslistw, .goback, .addbtn').slideDown(400);
+                        $.ajax({
+                            url  :   "errorpage.php",
+                            success: function(data){
+                                $.fancybox(data,{
+                                    'titleShow'	: false,
+                                    'transitionIn'	: 'elastic',
+                                    'transitionOut'	: 'elastic',
+                                });
+                            }
+                         });
+                    }
+                });
+                allgoodtoclick = true;
+            }
+        });
     });
 }
 var isloadingstill = 1;
