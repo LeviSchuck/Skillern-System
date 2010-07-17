@@ -198,7 +198,16 @@ if(isset($_REQUEST['init'])){
                             break;
                         case 6:
                             {//this is True and False
-                                
+                                ?>
+                                <div class="colb identm">
+                    <div class="hidden data">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&col=1</div>
+                        <a class="fancy">
+                        <?php
+                        echo $question[1];
+                        ?>
+                        </a>
+                        </div>
+                                <?php
                             }
                             break;
                         
