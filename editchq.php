@@ -92,7 +92,6 @@ if(isset($_REQUEST['init'])){
             switch((int)$_SESSION['editor']['qtype']['preset']){
                         case 1:
                         case 5:
-                        case 6:
                             {
                                 echo 2;
                             }
@@ -117,7 +116,7 @@ if(isset($_REQUEST['init'])){
                     ?>
                     <fieldset class="editorfieldset">
                     <legend class="cola ident">
-                        <span class="hidden data">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&col=0</span>
+                        <span class="hidden data">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&amp;col=0</span>
                         <a class="fancy">
                         <?php
                         echo $question[0];
@@ -125,7 +124,7 @@ if(isset($_REQUEST['init'])){
                         </a>
                         </legend>
                     <div class="colb descr">
-                        <div class="data hidden">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&col=1</div>
+                        <div class="data hidden">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&amp;col=1</div>
                             
                         <a class="fancy">
                         <?php
@@ -152,7 +151,7 @@ if(isset($_REQUEST['init'])){
                             {//multiple choice
                                 ?>
                     <div class="colb identm">
-                    <div class="hidden data">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&col=1</div>
+                    <div class="hidden data">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&amp;col=1</div>
                         <a class="fancy">
                         <?php
                         echo $question[1];
@@ -160,7 +159,7 @@ if(isset($_REQUEST['init'])){
                         </a>
                         </div>
                     <div class="colc descr">
-                        <div class="hidden data">&chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&col=2</div>
+                        <div class="hidden data">&amp;chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&amp;col=2</div>
                         
                     <a class="fancy">
                         <?php
@@ -183,6 +182,12 @@ if(isset($_REQUEST['init'])){
                         ?>
                         </a>
                         </div>
+                        <div class="cola answer">
+                            <div class="hidden data">&amp;chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&amp;col=0&amp;editType=multi&amp;editcol=2</div>
+                            <a class="fancy">
+                                Correct Answer: <span class="importantAns"><?php echo chr(ord("A")+(int)$question[0]); ?></span>
+                            </a>
+                        </div>
                                 <?php
                             }
                             break;
@@ -200,12 +205,27 @@ if(isset($_REQUEST['init'])){
                             {//this is True and False
                                 ?>
                                 <div class="colb identm">
-                    <div class="hidden data">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&col=1</div>
+                    <div class="hidden data">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&amp;col=1</div>
                         <a class="fancy">
                         <?php
                         echo $question[1];
                         ?>
                         </a>
+                        </div>
+                        <div class="cola answer">
+                            <div class="hidden data">chq=<?php echo $question['id'];?>&amp;sub=<?php echo $count; ?>&amp;col=0&amp;answcol=1&amp;editType=bool</div>
+                            <a class="fancy">
+                             Is <span class="importantAns"><?php
+                            switch((int)$question[0]){
+                                case 1:
+                                    echo 'True';
+                                    break;
+                                case 0:
+                                    echo 'False';
+                                    break;
+                            }
+                                ?></span>
+                            </a>
                         </div>
                                 <?php
                             }
