@@ -86,7 +86,7 @@ switch($editType){
             }
             echo "Use the drop-down menu below to select the correct answer. <br />";
             //now need to go and provide the options........
-            echo '<select name="multi">';
+            echo '<select name="multi" class="multilist">';
             for($x = 0; $x < $colxcount; $x++){
                 echo '<option value="'.$x.'"';
                 if($x == (int)$_SESSION['editor']['qdata'][(int)$_REQUEST['sub']][(int)$_REQUEST['col']]){
@@ -144,8 +144,34 @@ switch($editType){
                 global: false,
                 type: "POST",
                 data: ({data : <?php
-                
-                //$('.fancyframe').find('.textual').val()
+                switch($editType){
+                    case "bool"://boolean values, true and false stuff
+                        {
+                           echo "$('.fancyframe').find(\"input[name='boolean']:checked\").val()";
+                        }
+                        break;
+                    case "multi":
+                        {
+                            echo "$('.fancyframe').find('.multilist').val()";
+                        }
+                        break;
+                    case "numeric":
+                        {
+                            
+                        }
+                        break;
+                    case "date":
+                        {
+                            //I might implement this sometime later, it might be a bit troublesome.
+                        }
+                        break;
+                    case "text":
+                        {
+                            echo "$('.fancyframe').find('.textual').val()";
+                        }
+                    break;
+                }
+                //
                 
                 ?>,
                        sub : <?php echo (int)$_REQUEST['sub'];?>,
