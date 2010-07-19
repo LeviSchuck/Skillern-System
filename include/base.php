@@ -325,5 +325,38 @@ function defaultcols($qtype){
     }
     return $cols;
 }
+function usertypeToString($typeID = 0){
+    //this function takes in an integer, feeds to a switch, and brings back a user-readable string of the type of user. Refer to Wiki.
+    switch((int)$typeID){
+        case 0:
+            $return = "Banned";
+            break;
+        case 1:
+        case 2:
+            $return = "Student";
+            break;
+        case 3:
+            $return = "Moderator student";
+            break;
+        case 4:
+        case 5:
+        case 6:
+            $return = "Unknown";
+            break;
+        case 7:
+            $return = "Assistant Teacher";
+            break;
+        case 8:
+            $return = "Teacher";
+            break;
+        case 9:
+            $return = "Unknown";
+            break;
+        case 10:
+            $return = "Web Master";
+            break;
+    }
+    return $return;
+}
 
 ?>

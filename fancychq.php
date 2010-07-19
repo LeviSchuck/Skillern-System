@@ -102,7 +102,7 @@ switch($editType){
                 echo '</option>'."\n";
             }
             echo '</select>';
-            echo '<div class="textual hidden">The changes have been made, but they may not show here until the page has reloaded.</div>';
+            echo '<div class="hidden info">The changes have been made, but they may not show here until the page has reloaded.</div>';
         }
         break;
     case "numeric":
@@ -157,7 +157,7 @@ switch($editType){
                         break;
                     case "numeric":
                         {
-                            
+                            echo "$('.fancyframe').find('.textual').val()";
                         }
                         break;
                     case "date":
@@ -181,10 +181,25 @@ switch($editType){
                 success: function(msg){
                    if(msg == "good"){
                     $('.dragable2, .dragable').each(function(){
-                        //alert('Looking at: ' + $(this).find(".data").find('.location').text());
                         if(parseInt($(this).find(".data").find('.location').text()) == <?php echo (int)$_REQUEST['sub'];?>){
-                            alert('found something.');
-                            $(this).find(".col<?php echo chr(ord('a')+ (int)$_REQUEST['col']); ?>").find('.fancy').text($('.fancyframe').find('.textual').val());
+                            $(this).find(".col<?php echo chr(ord('a')+ (int)$_REQUEST['col']); ?>").find('.fancy').text(<?php
+                            switch($editType){
+                                case "text":
+                                case "numeric":
+                                    {
+                                        echo "$('.fancyframe').find('.textual').val()";
+                                    }
+                                    break;
+                                case "multi":
+                                case "date":
+                                case "bool":
+                                    {
+                                        echo "'You will need to reload the page to see the full effect of the change.'";
+                                    }
+                                    break;
+                            }
+                            
+                            ?>);
                             $.fancybox.close();
                         }
                     });

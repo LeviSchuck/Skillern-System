@@ -6,7 +6,7 @@
  */
 
 require("include/base.php");
-
+needrights(1);//sorry but no peepers.
 $chapter = (int)trim($_REQUEST['c']);
 $sql = "SELECT comment FROM chapters WHERE chid = $chapter LIMIT 1";
 $resu = sqlite_query($sdb, $sql);

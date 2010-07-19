@@ -6,6 +6,7 @@
  */
 
 require("include/base.php");
+needrights(1);//need to be authenticated a student at least.
 $chapter = (int)trim($_REQUEST['c']);
 $title = "Welcome to Chapter $chapter ";
 
