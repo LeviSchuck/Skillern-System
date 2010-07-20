@@ -229,7 +229,24 @@ if(panhook === undefined){
             });
         
     });
-    
+    $('.vusers').click( function(){
+        $('.vusers').unbind();
+            $.ajax({
+                type: "POST",
+                url: "user.viewall.php",
+                data: "",
+                success: function(data){
+                    $('.workingarea').html(data);
+                    $('.mcontent').slideUp(400, function(){
+                        $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                        $('.mcontent').slideDown(600);
+                        $('.workingarea').find('.bcontent').html('');
+                       
+                    });
+                }
+            });
+        
+    });
 
     });
         $('.eprofl').unbind();

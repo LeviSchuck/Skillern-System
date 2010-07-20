@@ -68,7 +68,7 @@ color: #111;
    float: left;
    margin-top:2px;
  }
- .luser, .lpass, .fpuserinput , .fppassinput , .fpveriinput, .fpemailinput {
+ .luser, .lpass, .fpuserinput , .fppassinput , .fpveriinput, .fpemailinput, .searchbox {
    -moz-background-clip:border;
 -moz-background-inline-policy:continuous;
 -moz-background-origin:padding;
@@ -565,7 +565,7 @@ fieldset .ident {
 .addbtn {
    background-image: url(../images/Add-icon.png);
    padding-right: 35px;
-   height: 40px;
+   height: 24px;
    float: right;
    background-position: right center;
    background-repeat: no-repeat;
@@ -618,4 +618,65 @@ a {
  }
  .importantAns {
    font-weight: bold;
+ }
+ .searchResult {
+   width: 580px;
+   margin: auto;
+   clear: both;
+   margin-top: 8px;
+   border: #CBB348 1px solid;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+ }
+ .searchField {
+   float: left;
+   width: 125px;
+   text-align: center;
+   min-height: 2px;
+ }
+ .searchform {
+   float: left!important;
+ }
+ .margintop16 {
+   margin-top:16px;
+ }
+ .mainbutton {
+   width: 120px;
+   border: #CBB348 1px solid;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+   margin-right: 16px;
+ }
+ .slidersection {
+   width: 500px;
+   margin: auto;
+   clear: both;
+ }
+ .perioditem {
+   padding-left: 48px;
+   text-align: center;
+   clear: both;
+ }
+ .perioditem .period {
+   width: 70px;
+   float: left;
+ }
+ .perioditem .periodnum {
+   width: 20px;
+   float: left;
+ }
+ .perioditem .periodwith {
+   width: 55px;
+   float: left;
+ }
+ .perioditem .periodpeople {
+   width: 70px;
+   float: left;
+   clear: right;
+ }
+ .searchcontent {
+   clear: both;
+   
  }

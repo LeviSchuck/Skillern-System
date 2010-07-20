@@ -358,5 +358,8 @@ function usertypeToString($typeID = 0){
     }
     return $return;
 }
-
+function stringContains($haystack, $needle){
+    $pos = strpos($haystack,$needle);
+    return ($pos !== false); 
+}
 ?>
