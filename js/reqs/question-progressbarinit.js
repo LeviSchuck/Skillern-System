@@ -12,7 +12,7 @@ $('.qprogress').slideUp();
                     });
                     $.ajax({
                         type: "POST",
-                        url: "question.php",
+                        url: "chapter.question.php",
                         data: tosend,
                         success: function(data){
                             

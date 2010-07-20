@@ -141,7 +141,7 @@ $(document).ready(function() {
         $('.editicon').unbind();
         $.ajax({
             type: "POST",
-            url: "editchq.php",
+            url: "chq.edit.php",
             data: "chq=" + $(this).parent().find('.chq').html() + "&qt=" + $(this).parent().find('.csectype').html() + "&c=<?php echo $chapter; ?>&init=1",
             success: function(data){
                 $('.workingarea').html(data);
@@ -175,7 +175,7 @@ $(document).ready(function() {
     });
             $('.chpquick').unbind();
              $('.chpquick').click( function(){
-        var newWindow = window.open('wbch.php?c=' + $(this).find('.chid').html(), '_blank');
+        var newWindow = window.open('chapter.workbook.php?c=' + $(this).find('.chid').html(), '_blank');
     newWindow.focus();
     });
              $('.csection .cscettitle').unbind();

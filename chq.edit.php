@@ -279,7 +279,7 @@ function onloadedy(){
                 $('.goback').unbind();
                 $.ajax({
                     type: "POST",
-                    url: "chview.php",
+                    url: "chapter.view.php",
                     data: "c=<?php
                     echo $_SESSION['editor']['chapter'];
                     ?>",
@@ -302,7 +302,7 @@ function onloadedy(){
                 allgoodtoclick = false;
                 $.ajax({
                     type: "POST",
-                    url: "augchq.php",
+                    url: "chq.augment.php",
                     data: "chqid=<?php
                     echo (int)$_REQUEST['chq'];
                     ?>&qtype=<?php echo (int)$_SESSION['editor']['qtype']['preset']; ?>",
@@ -317,7 +317,7 @@ function onloadedy(){
                             });
                            $.ajax({
                                 type: "POST",
-                                url: "editchq.php",
+                                url: "chq.edit.php",
                                 data: "chq=<?php echo $_POST['chq']; ?>&qt=<?php echo $_POST['qt']; ?>&c=<?php echo $_POST['c']; ?>&init=1",
                                 success: function(data2){
                                     $('.workingarea').html(data2);
@@ -373,7 +373,7 @@ function onloadedy(){
                             $('.goback, .addbtn, .savebtn, .fancy').unbind();
                             $.ajax({
                                 type: "POST",
-                                url: "delchq.php",
+                                url: "chq.delete.php",
                                 data: "chqid=<?php
                                 echo (int)$_REQUEST['chq'];
                                 ?>&qtype=<?php echo (int)$_SESSION['editor']['qtype']['preset']; ?>&del=" + elloc,
@@ -387,7 +387,7 @@ function onloadedy(){
                                         });
                                        $.ajax({
                                             type: "POST",
-                                            url: "editchq.php",
+                                            url: "chq.edit.php",
                                             data: "chq=<?php echo $_POST['chq']; ?>&qt=<?php echo $_POST['qt']; ?>&c=<?php echo $_POST['c']; ?>&init=1",
                                             success: function(data2){
                                                 $('.workingarea').html(data2);
@@ -431,7 +431,7 @@ function onloadedy(){
                 $.ajax({
                    type     :   "POST",
                    cache    : false,
-                   url  :   "fancychq.php",
+                   url  :   "chq.fancy.php",
                    data :   $(this).parent().find('.data').text(),
                    success: function(data){
                     $.fancybox(data,{
@@ -462,7 +462,7 @@ function onloadedy(){
                 
                 $.ajax({
                     type: "POST",
-                    url: "savechqs.php",
+                    url: "chq.savem.php",
                     data: "chqid=<?php
                     echo (int)$_REQUEST['chq'];
                     ?>&qtype=<?php echo (int)$_SESSION['editor']['qtype']['preset']; ?>&" + numbahs,
@@ -475,7 +475,7 @@ function onloadedy(){
                             
                             $.ajax({
                                 type: "POST",
-                                url: "chview.php",
+                                url: "chapter.view.php",
                                 data: "c=<?php
                                 echo $_SESSION['editor']['chapter'];
                                 ?>",

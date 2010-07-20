@@ -77,7 +77,7 @@ function onloadedy() {
                 $('.mtitle').slideDown(300);
                 $.ajax({
                     type: "POST",
-                    url: "saveprof.php",
+                    url: "profile.save.php",
                     data: "u=" + noand($('.fpuserinput').val()) + "&p=" + noand($('.fppassinput').val()) + "&v=" + noand($('.fpveriinput').val()) + "&e=" + noand($('.fpemailinput').val()),
                     success: function(data){
                         //alert("u=" + noand($('.fpuserinput').val()) + "&p=" + noand($('.fppassinput').val()) + "&v=" + noand($('.fpveriinput').val()) + "&e=" + noand($('.fpemailinput').val()));

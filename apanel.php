@@ -215,7 +215,7 @@ if(panhook === undefined){
         $('.pchaptext').unbind();
             $.ajax({
                 type: "POST",
-                url: "chview.php",
+                url: "chapter.view.php",
                 data: "c=" + $(this).parent().find('.pchapid').html(),
                 success: function(data){
                     $('.workingarea').html(data);
@@ -253,7 +253,7 @@ if(panhook === undefined){
         $('.eprofl').click(function(){
             $('.eprofl').unbind();
             $.ajax({
-                url: "eprofile.php",
+                url: "profile.edit.php",
                 success: function(data){
                     $('.workingarea').html('');
                     $('.workingarea').html(data);

@@ -213,7 +213,7 @@ function onloadedy(){
     $(document).ready(function() {
         $.ajax({
                 type: "POST",
-                url: "chview.php",
+                url: "chapter.view.php",
                 data: "c=<?php echo  $_SESSION['chq']['chid'];?>",
                 success: function(data){
                     $('.workingarea').html(data);
@@ -597,7 +597,7 @@ function onloadedy(){
         
             $.ajax({
                 type: "POST",
-                url: "question.php",
+                url: "chapter.question.php",
                 data: "selected=" + localthing.find('.data').html(),
                 success: function(data){
                     

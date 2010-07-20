@@ -140,7 +140,7 @@ switch($editType){
             $('.fancyframe').find('.textual').attr('readonly', 'readonly');
             //start ajax send
             $.ajax({
-                url: "savechq.php",
+                url: "chq.save.php",
                 global: false,
                 type: "POST",
                 data: ({data : <?php

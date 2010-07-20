@@ -211,7 +211,7 @@ $title = "Choose the Correct Answer";
 </div><!-- end questionw -->
 <div class="hidden qposition">0</div>
 <div class="qprogress">Progress: <div class="percentb"><!-- --> </div></div>
-<div class="goback"><div class="hidden data">chview.php</div><div class="gbtext">Go Back</div></div>
+<div class="goback"><div class="hidden data">chapter.view.php</div><div class="gbtext">Go Back</div></div>
 <div class="qworkingarea hidden"></div><!-- end qworkingarea -->
 </div><!-- end bcontent -->
 
@@ -231,7 +231,7 @@ function onloadedy(){
         $('.qoption').click(function(){
             $.ajax({
                 type: "POST",
-                url: "question.php",
+                url: "chapter.question.php",
                 data: "chq=<?php echo $chq; ?>&pos=" + $(this).find('.qposition').html() ,
                 success: function(data){
                     $('.qworkingarea').html(data);
@@ -249,7 +249,7 @@ function onloadedy(){
             if (confirm("Are you sure you want to go back? You will lose all your progress if you do.")){
                 $.ajax({
                     type: "POST",
-                    url: "chview.php",
+                    url: "chapter.view.php",
                     data: "c=<?php echo  $_SESSION['chq']['chid'];?>&killquiz=1",
                     success: function(data){
                         $('.workingarea').html(data);
@@ -264,7 +264,7 @@ function onloadedy(){
         });
         $.ajax({
                 type: "POST",
-                url: "question.php",
+                url: "chapter.question.php",
                 data: "chq=<?php echo $chq; ?>&pos=" + $(this).find('.qposition').html() ,
                 success: function(data){
                     $('.qworkingarea').html(data);

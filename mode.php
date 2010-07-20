@@ -170,7 +170,7 @@ file_put_contents('eee',serialize($_SESSION));
         $('.goback').click( function(){
             $.ajax({
                 type: "POST",
-                url: "chview.php",
+                url: "chapter.view.php",
                 data: "c=<?php echo  $c;?>",
                 success: function(data){
                     $('.workingarea').html(data);
@@ -204,7 +204,7 @@ file_put_contents('eee',serialize($_SESSION));
         $('.gotonext').click( function(){
             $.ajax({
                 type: "POST",
-                url: "quiz.php",
+                url: "chapter.quiz.php",
                 data: "chq=<?php echo $chq; ?>&init=1&mode1=" + mode1 + "&mode2=" + mode2 + "&mode3=" + mode3,
                 success: function(data){
                     $('.workingarea').html(data);
