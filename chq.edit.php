@@ -437,7 +437,7 @@ function onloadedy(){
                     $.fancybox(data,{
                                     'titleShow'	: false,
                                     'transitionIn'	: 'elastic',
-                                    'transitionOut'	: 'elastic',
+                                    'transitionOut'	: 'elastic'
                                     
                             });
                    }
@@ -497,7 +497,7 @@ function onloadedy(){
                                             $.fancybox(data,{
                                                 'titleShow'	: false,
                                                 'transitionIn'	: 'elastic',
-                                                'transitionOut'	: 'elastic',
+                                                'transitionOut'	: 'elastic'
                                             });
                                         }
                                     });
@@ -508,7 +508,7 @@ function onloadedy(){
                             $.fancybox(data,{
                                 'titleShow'     : false,
                                 'transitionIn'  : 'elastic',
-                                'transitionOut' : 'elastic',
+                                'transitionOut' : 'elastic'
                             });
                         }
                         
@@ -521,7 +521,7 @@ function onloadedy(){
                                 $.fancybox(data,{
                                     'titleShow'	: false,
                                     'transitionIn'	: 'elastic',
-                                    'transitionOut'	: 'elastic',
+                                    'transitionOut'	: 'elastic'
                                 });
                             }
                          });

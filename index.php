@@ -28,6 +28,9 @@
         <link rel="stylesheet" type="text/css" href="css/main.css" media="screen,print" />
 	<link rel="stylesheet" type="text/css" href="css/jquery.fancybox-1.3.1.css" media="screen,print" />
 	<link rel="stylesheet" type="text/css" href="css/jquery.contextMenu.css" media="screen" />
+	<!--[if lt IE 8]>
+	<link rel="stylesheet" type="text/css" href="css/internetexplorer.css" />
+	<![endif]-->
         <!-- end Base information -->
 </head>
 <body>
