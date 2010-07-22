@@ -1,5 +1,6 @@
 <?php
 require("include/base.php");
+needrights(1);
 $title = "Edit your profile";
 
 $sql = "SELECT email, username FROM skllern_users WHERE ID = '" . $_SESSION['id'] . "' LIMIT 1";

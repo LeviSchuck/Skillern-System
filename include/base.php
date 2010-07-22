@@ -276,8 +276,11 @@ function needrights($rightsLevel = 1){
     }
 }
 function rightsSatis($rightsLevel = 1){
+    /**
+     *Rights Satisfied (Integer: Minimum rights level)
+     */
     if(isset($_SESSION['rights'])){
-        if($_SESSION['rights'] < $rightsLevel){
+        if($_SESSION['rights'] < $rightsLevel || (int)$_SESSION['rights'] == 0 ){
             return false;
         }else{
             return true;

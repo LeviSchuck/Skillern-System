@@ -1,5 +1,6 @@
 <?php
 require("include/base.php");
+needrights(1);
 $anyotherJS = '';
 $waschecked = false;
 //$_SESSION['qdata']; //the predetermied data to test with
