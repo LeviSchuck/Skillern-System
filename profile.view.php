@@ -16,6 +16,10 @@ if(rightsSatis(2)){
 
 ?><div class="bcontent">
 
+<div class="profileViewMain">
+    <div class="profileImage"><img class="profileImageImg" alt="<?php ?>" src="<?php ?>" title="Profile of <?php ?>" /></div>
+</div>
+
 </div>
 <div class="bscript">
 <script type="text/javascript">
