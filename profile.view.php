@@ -18,6 +18,9 @@ if(rightsSatis(2)){
 
 <div class="profileViewMain">
     <div class="profileImage"><img class="profileImageImg" alt="<?php ?>" src="<?php ?>" title="Profile of <?php ?>" /></div>
+    <div class="profileFirstName"><?php ?></div>
+    <?php ?><div class="profileLastName"><?php ?></div><?php ?>
+    
 </div>
 
 </div>
