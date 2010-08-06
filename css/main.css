@@ -681,3 +681,19 @@ a {
    clear: both;
    
  }
+ .profileViewMain {
+   width: 540px;
+ }
+ .profileText {
+   width: 320px;
+   float: right;
+ }
+ 
+ .profileName {
+   font-size: 24px;
+   text-shadow: 0 0 3px #fff;
+   font-weight: bold;
+ }
+ .profileFirstName, profileLastName {
+   display: inline;
+ }
