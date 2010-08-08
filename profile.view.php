@@ -36,7 +36,6 @@ while($row = sqlite_fetch_array($result)){
 ?><div class="bcontent">
 
 <div class="profileViewMain">
-<<<<<<< HEAD
     <div class="profileText">
         <div class="profileName">
             <div class="profileFirstName"><?php echo $userInfo['firstname'] ;?></div>
@@ -62,11 +61,9 @@ while($row = sqlite_fetch_array($result)){
         }
         ?>" title="Profile of <?php echo $userInfo['firstname'] ;?>" />
     </div><!-- end of profile image -->
-=======
     <div class="profileImage"><img class="profileImageImg" alt="<?php ?>" src="<?php ?>" title="Profile of <?php ?>" /></div>
     <div class="profileFirstName"><?php ?></div>
     <?php ?><div class="profileLastName"><?php ?></div><?php ?>
->>>>>>> 96d7e564c951f7f35cc2961d11a7cf00843727b5
     
 </div>
 
