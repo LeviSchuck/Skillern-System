@@ -16,7 +16,6 @@ if(rightsSatis(2)){
 $viewLevel = 2;
 //ok so we need to go and fetch the data on this person to display
 $decoded = $b64c->decode($_REQUEST['uid']);
-$decoded = 1;
 $sql = "SELECT username, firstname, lastname, classperiod, email, timeonline, usertype, image, lasttime FROM skllern_users WHERE 'skllern_users'.'ID'=".(real)$decoded;
 $result = sqlite_query($sdb,$sql);
 $userInfo = array();
@@ -28,7 +27,7 @@ while($row = sqlite_fetch_array($result)){
                       'period'=>$row['classperiod'],
                       'email'=>$row['email'],
                       'timeonline'=>$row['timeonline'],
-                      'type'=>$row['usertype'],
+                      'type'=>usertypeToString($row['usertype']),
                       'image'=>$row['image'],
                       'lasttime'=>$row['lasttime']);
     $userInfo = array_map('stripslashes',$userInfo);
@@ -44,6 +43,7 @@ while($row = sqlite_fetch_array($result)){
             <?php }?>
         </div><!-- end of profile name -->
         <div class="profilePeriod">Period: <?php echo $userInfo['period'];?></div>
+        <div class="profilePeriod">Type: <?php echo $userInfo['type'];?></div>
         <div class="profileStatus">Status: <?php
         if($userInfo['lasttime']  > time()-10*60){
             echo 'Online';
@@ -57,16 +57,22 @@ while($row = sqlite_fetch_array($result)){
         if(strlen($userInfo['image'])> 3){
             echo $userInfo['image'];
         }else{
-            echo '';//default image location
+            echo 'images/noProfileImage.png';//default image location
         }
         ?>" title="Profile of <?php echo $userInfo['firstname'] ;?>" />
     </div><!-- end of profile image -->
-    <div class="profileImage"><img class="profileImageImg" alt="<?php ?>" src="<?php ?>" title="Profile of <?php ?>" /></div>
-    <div class="profileFirstName"><?php ?></div>
-    <?php ?><div class="profileLastName"><?php ?></div><?php ?>
+    
     
 </div>
-
+<div class="goback margintop16">
+        <div class="gbtext">Go Back</div>
+    </div>
+    <?php
+    
+    ?>
+    <div class="editbtn">
+        <div class="edittext noselect">Edit</div>
+    </div>
 </div>
 <div class="bscript">
 <script type="text/javascript">
@@ -87,6 +93,23 @@ function onloadedy() {
                 type: "POST",
                 url: "apanel.php",
                 data: "",
+                success: function(data){
+                    $('.workingarea').html(data);
+                    $('.mcontent').slideUp(400, function(){
+                        $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                        $('.workingarea').find('.bcontent').html('');
+                        $('.mcontent').slideDown(600);
+                    });
+                }
+            });
+        });
+        $('.editbtn').unbind();
+        $('.editbtn').click( function(){
+            $('.editbtn').unbind();
+            $.ajax({
+                type: "POST",
+                url: "profile.edit.php",
+                data: "uid=<?php echo $_REQUEST['uid']; ?>",
                 success: function(data){
                     $('.workingarea').html(data);
                     $('.mcontent').slideUp(400, function(){

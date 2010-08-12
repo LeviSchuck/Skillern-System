@@ -122,7 +122,7 @@ background-repeat: no-repeat;
    float: left;
    position: static;
  }
- .logout,  .pcornell, .eprofl, .cuser, .vusers, .smail, .rlrec, .caled, .equot , .goback,  .fupdate, .gotonext, .qprogress, .checkorder{
+ .logout,  .pcornell, .eprofl, .cuser, .vusers, .smail, .rlrec, .caled, .equot , .goback,  .fupdate, .gotonext, .qprogress, .checkorder, .editbtn{
    display: block;
    padding-left: 28px;
    height: 24px;
@@ -146,9 +146,13 @@ padding-top: 3px;
  .pcornell {
    background-image: url(../images/Print-icon.png);
  }
- .eprofl {
-    background-image: url(../images/Settings-icon.png);
+ .eprofl, .editbtn {
+    background-image: url(../images/Edit-icon.png);
  }
+ .editbtn {
+     float: right;
+     clear: right;
+}
  .lbutton {
     width: 90px;
     margin: auto;
@@ -554,7 +558,7 @@ fieldset .ident {
    margin-top: 16px;
 }
 .savebtn {
-   background-image: url(../images/Next-icon.png);
+   background-image: url(../images/Save-icon.png);
    padding-right: 35px;
    height: 40px;
    float: right;

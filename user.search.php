@@ -73,6 +73,7 @@ while($row = sqlite_fetch_array($result)){
         echo '<div class="searchField lastname">'.htmlentities($row["'skllern_users'.'lastname'"]).'</div>';
         echo '<div class="searchField classperiod">'.htmlentities($row["'skllern_users'.'classperiod'"]).'</div>';
         echo '<div class="searchField usertype">'.usertypeToString($row["'skllern_users'.'usertype'"]).'</div>';
+        echo '<div class="searchField userID hidden">'.$b64c->encode($row["'skllern_users'.'ID'"]).'</div>';
     echo '</div>';//end search result div.
     echo "\n";
 }

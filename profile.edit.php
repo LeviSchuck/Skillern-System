@@ -1,9 +1,14 @@
 <?php
 require("include/base.php");
 needrights(1);
-$title = "Edit your profile";
-
-$sql = "SELECT email, username FROM skllern_users WHERE ID = '" . $_SESSION['id'] . "' LIMIT 1";
+$title = "Edit profile";
+if(isset($_REQUEST['uid'])){
+    needrights(7);
+    $uid = (real)$b64c->decode($_REQUEST['uid']);
+}else{
+    $uid = $_SESSION['id'];
+}
+$sql = "SELECT email, username FROM skllern_users WHERE ID = '" . $uid . "' LIMIT 1";
         $result = sqlite_query($sdb,$sql);
         while ($row = sqlite_fetch_array($result)) {
             $email = $row[0];

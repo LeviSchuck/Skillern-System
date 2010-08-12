@@ -100,6 +100,29 @@ function onloadedy(){
             $('.searchbox').val('period:'+periodnumber);
             $('.searchbox').trigger('change');
         });
+        $('.searchResult').live('click',function(){
+            console.log('clicked');
+            $(this).slideUp(400);
+            if($(this).find('.userID').length != 0){
+                console.log('we should get something');
+                //we should be good to search and view this user.
+                $.ajax({
+                    type: "POST",
+                    url: "profile.view.php",
+                    data: {'uid' : $(this).find('.userID').text()},
+                    success: function(data){
+                        $('.workingarea').html(data);
+                        $('.mcontent').slideUp(400, function(){
+                            $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                            $('.workingarea').find('.bcontent').html('');
+                            $('.mcontent').slideDown(600);
+                        });
+                    }
+                });
+            }else {
+                console.log('don\'t click');
+            }
+        });
     });
 }
 var isloadingstill = 1;
@@ -113,3 +136,4 @@ function checkloadedye(){
 }
 checkloadedye();
 </script>
+</div>
