@@ -124,7 +124,7 @@ background-repeat: no-repeat;
  }
  .logout,  .pcornell, .eprofl, .cuser, .vusers, .smail, .rlrec, .caled, .equot , .goback,  .fupdate, .gotonext, .qprogress, .checkorder, .editbtn{
    display: block;
-   padding-left: 28px;
+   padding-left: 32px;
    height: 24px;
    padding-top: 5px;
    background-position: left;
@@ -374,7 +374,7 @@ margin-right: 16px;
  .stdwrap {
    overflow: auto;
  }
- .wrongpass, .noemail, .cerror, .baduser, .noblank {
+ .wrongpass, .noemail, .cerror, .baduser, .noblank, .novalue {
    display: none;
    color: #FF0000;
  }

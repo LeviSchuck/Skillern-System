@@ -38,13 +38,31 @@ $sql = "SELECT email, username FROM skllern_users WHERE ID = '" . $uid . "' LIMI
         <div class="fpemailin textf"><input class="fpemailinput" type="text" value="<?php echo $email; ?>" /></div>
         <div class="noemail">Your email is not valid. Therefore it won't be changed...</div>
     </div>
+    <?php
+    if(hasrights(7)){
+    ?>
+    <div class="fptype">
+        <div class="fptypetext flabel">User Type</div>
+        <div class="ftypein selectf"><select name="ftypeselect" class="ftypeselect">
+                <option value="0">Banned</option>
+                <option value="1">Normal student</option>
+                <option value="3">Moderator student</option>
+                <option value="7">Teacher Assistant</option>
+                <option value="8">Teacher</option>
+                <option value="10">Web Master</option>
+            </select></div>
+        <div class="novalue">You somehow did not put in a correct value in the drop down...</div>
     </div>
-    <div class="noleft vspacer8"><!-- --></div>
-    <div class="fupdate">Update My Profile</div>
-    
-    <div class="goback"><div class="hidden data">apanel.php</div><div class="gbtext">Go Back</div></div>
+    <?php
+    }
+    ?>
+</div>
+<div class="noleft vspacer8"><!-- --></div>
+<div class="fupdate">Update Profile</div>
 
-   </div>
+<div class="goback"><div class="hidden data">apanel.php</div><div class="gbtext">Go Back</div></div>
+
+</div>
 
 <div class="bscript">
 <script type="text/javascript">
@@ -84,7 +102,8 @@ function onloadedy() {
                 $.ajax({
                     type: "POST",
                     url: "profile.save.php",
-                    data: "u=" + noand($('.fpuserinput').val()) + "&p=" + noand($('.fppassinput').val()) + "&v=" + noand($('.fpveriinput').val()) + "&e=" + noand($('.fpemailinput').val()),
+                    data: {u: $('.fpuserinput').val(), p: $('.fppassinput').val(), v:$('.fpveriinput').val(), e: $('.fpemailinput').val()<?php if(hasrights(7)){ ?>
+                    ,t:  $('.ftypeselect').val()<?php } ?>},
                     success: function(data){
                         //alert("u=" + noand($('.fpuserinput').val()) + "&p=" + noand($('.fppassinput').val()) + "&v=" + noand($('.fpveriinput').val()) + "&e=" + noand($('.fpemailinput').val()));
                         $('.workingarea').html(data);
