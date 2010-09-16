@@ -10,8 +10,14 @@ $username = strtolower(trim($_REQUEST['u']));
 $password = trim($_REQUEST['p']);
 $verify = trim($_REQUEST['v']);
 $email = trim($_REQUEST['e']);
+$utype = intval(trim($_REQUEST['t']))-1;
+if(rightsSatis(7)){
+    $uid = intval(trim($_REQUEST['uid']));
+}else{
+    $uid = $_SESSION['id'];
+}
 
-$sql = "SELECT username FROM skllern_users WHERE ID = '" . $_SESSION['id'] . "' LIMIT 1";
+$sql = "SELECT username FROM skllern_users WHERE ID = '" .  $uid. "' LIMIT 1";
         $result = sqlite_query($sdb,$sql);
         while ($row = sqlite_fetch_array($result)) {
             $curuser = $row[0];
@@ -19,7 +25,7 @@ $sql = "SELECT username FROM skllern_users WHERE ID = '" . $_SESSION['id'] . "' 
 
 //verify email
 if(eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email)) {
-$sql = "UPDATE skllern_users SET email = '".sqlite_escape_string($email)."' WHERE ID = ".$_SESSION['id'];
+$sql = "UPDATE skllern_users SET email = '".sqlite_escape_string($email)."' WHERE ID = ".$uid;
    $res = sqlite_query($sdb,$sql);
    if(sqlite_last_error($sdb) > 0){
       $error['email'] = 1;
@@ -41,7 +47,7 @@ if($password != $verify){
    }
 }else{
    if(!$error['passblank'] && $password != ''){
-      $sql = "UPDATE skllern_users SET password = '".sha1($password)."' WHERE ID = ".$_SESSION['id'];
+      $sql = "UPDATE skllern_users SET password = '".sha1($password)."' WHERE ID = ".$uid;
       $res = sqlite_query($sdb,$sql);
       if(sqlite_last_error($sdb) > 0){
          $error['verify'] = 1;
@@ -66,7 +72,7 @@ if($username != strtolower($curuser)){
     if($count > 0){
        $error['user'] = 1;
     }else{
-       $sql = "UPDATE skllern_users SET username = '".sqlite_escape_string($username)."' WHERE ID = ".$_SESSION['id'];
+       $sql = "UPDATE skllern_users SET username = '".sqlite_escape_string($username)."' WHERE ID = ".$uid;
        $res = sqlite_query($sdb,$sql);
        if(sqlite_last_error($sdb) > 0){
           $error['user'] = 1;
@@ -74,7 +80,19 @@ if($username != strtolower($curuser)){
        }
     }
 }
-
+if(rightsSatis(7)){
+    //ok, so we may change the user type(but they must be a TA or greater.)
+    if($utype > -1){
+        if($utype < $_SESSION['rights']){
+            $sql = "UPDATE skllern_users SET usertype = $utype WHERE ID = ".$uid;
+            $res = sqlite_query($sdb,$sql);
+            if(sqlite_last_error($sdb) > 0){
+               $error['usertype'] = 1;
+            }
+        }
+        
+    }
+}
 
 
 $fail = 0;
@@ -122,6 +140,11 @@ if(in_array(1,$error)){
       $('.wrongpass').fadeIn(500);
                      <?php
                      break;
+                    case "usertype":
+                        ?>
+      $('.novalue').fadeIn(500);
+                     <?php
+                        break;
                }
             }
          }

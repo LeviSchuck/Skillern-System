@@ -8,11 +8,12 @@ if(isset($_REQUEST['uid'])){
 }else{
     $uid = $_SESSION['id'];
 }
-$sql = "SELECT email, username FROM skllern_users WHERE ID = '" . $uid . "' LIMIT 1";
+$sql = "SELECT email, username, usertype FROM skllern_users WHERE ID = '" . $uid . "' LIMIT 1";
         $result = sqlite_query($sdb,$sql);
         while ($row = sqlite_fetch_array($result)) {
             $email = $row[0];
             $username = $row[1];
+            $ulevel = $row[2];
         }
 ?><div class="bcontent">
 <div class="stdwrap">
@@ -38,24 +39,39 @@ $sql = "SELECT email, username FROM skllern_users WHERE ID = '" . $uid . "' LIMI
         <div class="fpemailin textf"><input class="fpemailinput" type="text" value="<?php echo $email; ?>" /></div>
         <div class="noemail">Your email is not valid. Therefore it won't be changed...</div>
     </div>
+    <br  style="clear:both;"/>
     <?php
-    if(hasrights(7)){
+    if(rightsSatis(7)){
     ?>
     <div class="fptype">
         <div class="fptypetext flabel">User Type</div>
         <div class="ftypein selectf"><select name="ftypeselect" class="ftypeselect">
-                <option value="0">Banned</option>
-                <option value="1">Normal student</option>
-                <option value="3">Moderator student</option>
-                <option value="7">Teacher Assistant</option>
-                <option value="8">Teacher</option>
-                <option value="10">Web Master</option>
+                <?php
+                $usertype = array(0=>'Banned',
+                                  1=>'Normal Student',
+                                  2=>'Normal Student',
+                                  3=>'Moderator student',
+                                  7=>'Teacher Assistant',
+                                  8=>'Teacher',
+                                  10=>'Web Master');
+                foreach($usertype as $key => $utype){
+                    echo '<option value="'.($key+1).'"';
+                    if($ulevel == $key){
+                        echo ' selected="true"';
+                    }
+                    echo '>';
+                    echo $utype;
+                    echo '</option>';
+                }
+                
+                ?>
             </select></div>
-        <div class="novalue">You somehow did not put in a correct value in the drop down...</div>
+        <div class="novalue">You somehow did not put in a correct value in the drop down...<br />Perhaps you selected a rights level higher than your own.</div>
     </div>
     <?php
     }
     ?>
+    
 </div>
 <div class="noleft vspacer8"><!-- --></div>
 <div class="fupdate">Update Profile</div>
@@ -102,7 +118,7 @@ function onloadedy() {
                 $.ajax({
                     type: "POST",
                     url: "profile.save.php",
-                    data: {u: $('.fpuserinput').val(), p: $('.fppassinput').val(), v:$('.fpveriinput').val(), e: $('.fpemailinput').val()<?php if(hasrights(7)){ ?>
+                    data: {u: $('.fpuserinput').val(), p: $('.fppassinput').val(), v:$('.fpveriinput').val(), e: $('.fpemailinput').val(), uid: <?php echo $uid; if(rightsSatis(7)){ ?>
                     ,t:  $('.ftypeselect').val()<?php } ?>},
                     success: function(data){
                         //alert("u=" + noand($('.fpuserinput').val()) + "&p=" + noand($('.fppassinput').val()) + "&v=" + noand($('.fpveriinput').val()) + "&e=" + noand($('.fpemailinput').val()));
