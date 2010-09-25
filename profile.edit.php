@@ -82,8 +82,9 @@ $sql = "SELECT email, username, usertype FROM skllern_users WHERE ID = '" . $uid
 
 <div class="bscript">
 <script type="text/javascript">
-
-function onloadedy() {
+onloadedy = null;
+onloadedy = function() {
+    console.log('Preparing Edit Profile Page');
     $(document).ready(function() {
         $('.mtitle').stop(true, true);
         $('.mtitle').slideUp(300, function(){
@@ -92,6 +93,7 @@ function onloadedy() {
                 ?>');
                 $('.mtitle').slideDown(300);
         });
+        console.log('Title changed');
         $('.goback').unbind();
         $('.goback').click( function(){
             $('.goback').unbind();
@@ -109,28 +111,35 @@ function onloadedy() {
                 }
             });
         });
+        console.log('Reset goback button');
         $('.fupdate').unbind();
         $('.fupdate').click( function(){
             $('.fupdate').unbind();
             $('.mtitle').slideUp(300, function(){
                 $('.mtitle').html('Sending information.');
                 $('.mtitle').slideDown(300);
+                console.log('Sending Information')
                 $.ajax({
                     type: "POST",
                     url: "profile.save.php",
                     data: {u: $('.fpuserinput').val(), p: $('.fppassinput').val(), v:$('.fpveriinput').val(), e: $('.fpemailinput').val(), uid: <?php echo $uid; if(rightsSatis(7)){ ?>
                     ,t:  $('.ftypeselect').val()<?php } ?>},
                     success: function(data){
+                        console.log('Success with getting result.');
                         //alert("u=" + noand($('.fpuserinput').val()) + "&p=" + noand($('.fppassinput').val()) + "&v=" + noand($('.fpveriinput').val()) + "&e=" + noand($('.fpemailinput').val()));
+                        console.log('Moving data to working area.');
                         $('.workingarea').html(data);
+                        
                         $('.mtitle').slideUp(300, function(){
                             $('.mtitle').html('<?php
                             echo $title;
                             ?>');
                             $('.mtitle').slideDown(300);
                         });
+                        console.log('Changed Title');
                     },
                     error: function(){
+                        console.log('Whoa! What happened?');
                         $('.mtitle').slideUp(300, function(){
                             $('.mtitle').html('Error in transfer, try again.');
                             $('.mtitle').slideDown(300);
@@ -140,6 +149,7 @@ function onloadedy() {
             });
         });
         
+        console.log('Reset Update button');
     });//end document ready
     
 }
@@ -148,12 +158,13 @@ function noand(strinput){
 }
      function checkloadedy(){
         if($('.workingarea').find('.bcontent').html() == ''){
+            console.log('Okay, lets try to init the page');
             onloadedy();
         }else{
             setTimeout('checkloadedy()', 50);
         }
      }
-     
+     console.log('Time to check to see if we are loaded.');
      
 checkloadedy();
 </script></div>
