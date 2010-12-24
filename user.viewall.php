@@ -100,6 +100,7 @@ function onloadedy(){
             $('.searchbox').val('period:'+periodnumber);
             $('.searchbox').trigger('change');
         });
+        $('.searchResult').die('click');
         $('.searchResult').live('click',function(){
             console.log('clicked');
             $(this).slideUp(400);

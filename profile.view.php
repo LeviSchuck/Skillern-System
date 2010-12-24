@@ -6,14 +6,17 @@ require("include/base.php");
 //rightsSatis is the non-fatal test (true false)
 
 if(rightsSatis(2)){
-    $viewLevel = 1;    
-}else if(rightsSatis(7)){
-    $viewLevel = 2;
+    $viewLevel = 1;
+    if(rightsSatis(7)){
+        $viewLevel = 2;
+        if(rightsSatis(8)){
+            $viewLevel = 3;
+        } 
+    }
 }else{
     //we should not be at this point
     $viewLevel = 0;
 }
-$viewLevel = 2;
 //ok so we need to go and fetch the data on this person to display
 $decoded = $b64c->decode($_REQUEST['uid']);
 $sql = "SELECT username, firstname, lastname, classperiod, email, timeonline, usertype, image, lasttime FROM skllern_users WHERE 'skllern_users'.'ID'=".(real)$decoded;
@@ -63,17 +66,30 @@ $title = 'View Profile';
         ?>" title="Profile of <?php echo $userInfo['firstname'] ;?>" />
     </div><!-- end of profile image -->
     
-    
+    <?php
+    echo $viewLevel;
+    ?>
 </div>
 <div class="goback margintop16">
         <div class="gbtext">Go Back</div>
     </div>
     <?php
-    
+    if($viewLevel >= 2){
     ?>
     <div class="editbtn">
         <div class="edittext noselect">Edit</div>
     </div>
+    <?php
+    }
+    if($viewLevel >=3){
+    ?>
+    <div class="delbtn">
+        <div class="deltext noselect">Delete</div>
+    </div>
+    <?php
+    }
+    ?>
+    
 </div>
 <div class="bscript">
 <script type="text/javascript">
@@ -108,6 +124,25 @@ function onloadedy() {
             });
         });
         console.log('Reset go back button to apanel.php');
+        $('.delbtn').unbind();
+        $('.delbtn').click( function(){
+            $('.delbtn').unbind();
+            $.ajax({
+                type: "POST",
+                url: "profile.del.php",
+                data: "uid=<?php echo $_REQUEST['uid']; ?>",
+                success: function(data){
+                    $('.workingarea').html(data);
+                    $('.mcontent').slideUp(400, function(){
+                        $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                        $('.workingarea').find('.bcontent').html('');
+                        $('.mcontent').slideDown(600);
+                    });
+                    console.log('Set the data to working area');
+                }
+            });
+        });
+        console.log('Reset Edit button');
         $('.editbtn').unbind();
         $('.editbtn').click( function(){
             $('.editbtn').unbind();
@@ -126,7 +161,6 @@ function onloadedy() {
                 }
             });
         });
-        console.log('Reset Edit button');
     });//end document ready
     
 }

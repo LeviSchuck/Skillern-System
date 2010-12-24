@@ -578,6 +578,28 @@ fieldset .ident {
    padding-top: 20px;
    margin-right: 14px;
 }
+.delbtn {
+   background-image: url(../images/Delete-icon.png);
+   padding-left: 35px;
+   height: 24px;
+   float: right;
+   background-position: left center;
+   background-repeat: no-repeat;
+   font-weight: bold;
+   padding-top: 20px;
+   margin-left: 14px;
+}
+.cancelbtn {
+   background-image: url(../images/Cancel-icon.png);
+   padding-right: 35px;
+   height: 24px;
+   float: right;
+   background-position: right center;
+   background-repeat: no-repeat;
+   font-weight: bold;
+   padding-top: 20px;
+   margin-right: 14px;
+}
 .descr .multc {
    padding-left: 16px;
    padding-bottom: 3px;
