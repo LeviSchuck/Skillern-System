@@ -8,7 +8,12 @@ if(isset($_SESSION['skillern'])){
 function login(){
     global $_REQUEST, $_SESSION, $sdb, $cscript, $title;
     $errort = '';
-    $username = strtolower(trim($_REQUEST['usern']));
+    if(isset($_REQUEST['usern'])){
+	$username = strtolower(trim($_REQUEST['usern']));
+    }else{
+	$username = "";
+    }
+    
     //test to see if they are trying to get in
     if(isset($_REQUEST['sub'])){
         //check login here
