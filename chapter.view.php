@@ -30,7 +30,10 @@ $sql = "SELECT comment FROM chapters WHERE chid = $chapter LIMIT 1";
 $resu = sqlite_query($sdb, $sql);
 $chtitle = sqlite_fetch_array($resu);
 echo ucfirst(strtolower($chtitle[0]));
-
+if(strlen($chtitle[0])< 1){
+    //we need to say something so user can select and edit.
+    echo "No Title Available";
+}
 echo '</div>';
 
 echo '<div class="testtext">Test on</div>';
@@ -48,6 +51,7 @@ while($rowt = sqlite_fetch_array($resu)){
     <div class="csectype hidden">' . $rowt['type'] . '</div>
     <div class="chq hidden">' . $rowt[0] . '</div>
     <div class="cscettitle">';
+    
     echo $qtypes[(int)$rowt['type']]['name'];
     echo '</div>'."\n";
     //start edit section
@@ -153,6 +157,24 @@ $(document).ready(function() {
             }
         });
     });
+    $('.chtitle').unbind();
+    $('.chtitle').click(function(){
+        $.fancybox.showActivity();
+        $.ajax({
+                   type     :   "POST",
+                   cache    : false,
+                   url  :   "chapter.title.fancy.php",
+                   data :   "chid=<?php echo $chapter; ?>",
+                   success: function(data){
+                    $.fancybox(data,{
+                                    'titleShow'	: false,
+                                    'transitionIn'	: 'elastic',
+                                    'transitionOut'	: 'elastic'
+                                    
+                            });
+                   }
+                });
+        });
     <?php
     }
     ?>
