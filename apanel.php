@@ -132,8 +132,9 @@ $title = "Welcome and study well";
     $datas = array();
     $hasSomething = false;
     while ($row = sqlite_fetch_array($result)) {
-        $datet = stripslashes(trim(preg_replace('/Today is the .?[\d]\/\-.?[\d].?[\d]/i', '',$row[1])));
-        if($datet != ''){$hasSomething = true;}
+        $datet = stripslashes(trim(preg_replace('/Today is the .?[\d]\/\-.?[\d]?.?[\d]/i', '',$row[1])));
+        //if($datet != ''){
+            $hasSomething = true;//}
         $datas[] = array($row[2], $datet, $row[0]);
     }
     if($hasSomething){
@@ -228,6 +229,23 @@ if(panhook === undefined){
                 }
             });
         
+    });
+    $('.caled').unbind();
+    $('.caled').click( function(){
+        $('.caled').unbind();
+        $.ajax({
+            type: "POST",
+            url: "calendar.edit.php",
+            data: "",
+            success: function(data){
+                $('.workingarea').html(data);
+                $('.mcontent').slideUp(400, function(){
+                    $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                    $('.workingarea').find('.bcontent').html('');
+                    $('.mcontent').slideDown(600);
+                });
+            }
+        });
     });
     $('.vusers').click( function(){
         $('.vusers').unbind();

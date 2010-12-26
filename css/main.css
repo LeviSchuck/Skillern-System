@@ -600,6 +600,26 @@ fieldset .ident {
    padding-top: 20px;
    margin-right: 14px;
 }
+.goprev {
+   background-image: url(../images/Previous-icon.png);
+   padding-left: 35px;
+   height: 40px;
+   float:left;
+   background-position: left center;
+   background-repeat: no-repeat;
+   font-weight: bold;
+   padding-top: 20px;
+}
+.gonext {
+   background-image: url(../images/Next-icon.png);
+   padding-right: 35px;
+   height: 40px;
+   float: right;
+   background-position: right center;
+   background-repeat: no-repeat;
+   font-weight: bold;
+   padding-top: 20px;
+}
 .descr .multc {
    padding-left: 16px;
    padding-bottom: 3px;
