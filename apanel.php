@@ -247,6 +247,23 @@ if(panhook === undefined){
             }
         });
     });
+    $('.equot').unbind();
+     $('.equot').click( function(){
+        $('.equot').unbind();
+        $.ajax({
+            type: "POST",
+            url: "quotes.edit.php",
+            data: "",
+            success: function(data){
+                $('.workingarea').html(data);
+                $('.mcontent').slideUp(400, function(){
+                    $('.mcontent').html($('.workingarea').find('.bcontent').html());
+                    $('.workingarea').find('.bcontent').html('');
+                    $('.mcontent').slideDown(600);
+                });
+            }
+        });
+    });
     $('.vusers').click( function(){
         $('.vusers').unbind();
             $.ajax({
