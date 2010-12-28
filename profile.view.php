@@ -96,16 +96,16 @@ $title = 'View Profile';
 
 function onloadedy() {
     $(document).ready(function() {
-        console.log('At the profile View page');
+        //console.log('At the profile View page');
         $('.mtitle').stop(true, true);
         $('.mtitle').slideUp(300, function(){
                 $('.mtitle').html('<?php
                 echo $title;
                 ?>');
                 $('.mtitle').stop().slideDown(300);
-                console.log('Set the title to <?php echo $title; ?>');
+                //console.log('Set the title to <?php echo $title; ?>');
         });
-        console.log('Time to set the goback button.');
+        //console.log('Time to set the goback button.');
         $('.goback').unbind();
         $('.goback').click( function(){
             $('.goback').unbind();
@@ -123,7 +123,7 @@ function onloadedy() {
                 }
             });
         });
-        console.log('Reset go back button to apanel.php');
+        //console.log('Reset go back button to apanel.php');
         $('.delbtn').unbind();
         $('.delbtn').click( function(){
             $('.delbtn').unbind();
@@ -138,11 +138,11 @@ function onloadedy() {
                         $('.workingarea').find('.bcontent').html('');
                         $('.mcontent').slideDown(600);
                     });
-                    console.log('Set the data to working area');
+                    //console.log('Set the data to working area');
                 }
             });
         });
-        console.log('Reset Edit button');
+        //console.log('Reset Edit button');
         $('.editbtn').unbind();
         $('.editbtn').click( function(){
             $('.editbtn').unbind();
@@ -157,7 +157,7 @@ function onloadedy() {
                         $('.workingarea').find('.bcontent').html('');
                         $('.mcontent').slideDown(600);
                     });
-                    console.log('Set the data to working area');
+                    //console.log('Set the data to working area');
                 }
             });
         });
@@ -167,7 +167,7 @@ function onloadedy() {
 
      function checkloadedy(){
         if($('.workingarea').find('.bcontent').html() == ''){
-            console.log('Time to see if the profile view page is loaded.');
+            //console.log('Time to see if the profile view page is loaded.');
             onloadedy();
         }else{
             setTimeout('checkloadedy()', 50);

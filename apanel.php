@@ -105,8 +105,8 @@ $title = "Welcome and study well";
         <div class="ptitle noselect">Administration</div>
         <div class="cuser noselect">Create User</div>
         <div class="vusers noselect">View Users</div>
-        <div class="smail noselect">Send Mass Email</div>
-        <div class="rlrec noselect">Reset Log in records</div>
+        <!--<div class="smail noselect">Send Mass Email</div>-->
+        <!--<div class="rlrec noselect">Reset Log in records</div>-->
         <div class="caled noselect">Edit Calendar</div>
         <div class="equot noselect">Edit Quotes</div>
     </div>

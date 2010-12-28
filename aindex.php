@@ -167,7 +167,7 @@ function onloadedy() {
 }//end the onleadedy
     function checkloadedy(){
         if($('.workingarea').find('.bcontent').html() == ''){
-	    console.log('okay, we should try to init the page now.');
+	    //console.log('okay, we should try to init the page now.');
 	    $(".lbutton").unbind();
             onloadedy();
         }else{
@@ -175,7 +175,7 @@ function onloadedy() {
 	    
         }
      }
-     console.log('Starting to check for loading.');
+     //console.log('Starting to check for loading.');
      checkloadedy();
 </script>
 <div class="time">

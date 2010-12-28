@@ -4,8 +4,8 @@
  * @author Kloplop321.com
  * @copyright 2009
  */
-include ("themes.php");
-include ("connect.php");
+require("include/base.php");
+function tf($string){return $string;}//stub, not sure what this is supposed to do.
 $loc = getcwd();
 $loc .= "/font/";
 define('FPDF_FONTPATH', $loc);
@@ -93,6 +93,7 @@ class PDF extends FPDF {
         $at = 1;
         $wid = 201-$col;
         $hit = $this->baseHeight();
+	$itt = 0;
         foreach ($data as $row) {
 
             $this->SetFont('Times', 'B', $this->baseFont());
@@ -350,7 +351,11 @@ class PDF extends FPDF {
     }
 
 }
+if(isset($_GET['c'])){
 $id = (int)$_GET['c'];
+}else{
+$id=0;
+}
 if ($id == 0) {
     $id = 9;
 }
@@ -360,7 +365,7 @@ if($id > 42){
 if($id < 1){
 	$id = 1;
 } //Get title and stuff
-
+/*
 $sql = "SELECT ID, tf, mu, ppe, ide, gl, ptio, cae, wblink, enabled, comment FROM chapters WHERE chid = '$id' LIMIT 1";
 $res = sqlite_query($sdb,$sql);
 $row = sqlite_fetch_array($res);
@@ -374,7 +379,11 @@ $ptio = $row[6];
 $cae = $row[7];
 $wblink = $row[8];
 $enabled = $row[9];
-$title = $row[10];
+$title = $row[10];*/
+$sql = "SELECT comment FROM chapters WHERE chid = $id LIMIT 1";
+$resu = sqlite_query($sdb, $sql);
+$chtitle = sqlite_fetch_array($resu);
+$title = ucfirst(strtolower($chtitle[0]));
  //die($sql.' '.print_r($row));
 $pdf = new PDF();
 $pdf->AliasNbPages();
@@ -404,7 +413,9 @@ $pdf->Ln(2);
 
 $pdf->Cell(0, 10, "Glossary", 0, 1, 'C');
 //Glossary
-$sql = "SELECT left , right FROM glossary WHERE chid = '" . $id . "' LIMIT 1";
+$sql = "SELECT cola AS left, colb AS right
+FROM 'chq'
+WHERE chid = $id AND type = 1 ";
 
 $result = sqlite_query($sdb,$sql);
 while ($row = sqlite_fetch_array($result)) {
@@ -429,7 +440,9 @@ $pdf->SetFont('Times', 'B', 14);
 $pdf->Cell(0, 10, "True & False", 0, 1, 'C');
 $pdf->Ln(2);
 
-$sql = "SELECT left,right FROM taf WHERE chid = '" . $id . "' LIMIT 1";
+$sql = "SELECT cola AS left, colb AS right
+FROM 'chq'
+WHERE chid = $id AND type = 7 ";
 $result = sqlite_query($sdb,$sql);
 while ($row = sqlite_fetch_array($result)) {
     $left = $row[0];
@@ -452,7 +465,9 @@ if($pdf->GetY() > $pdf->newPageAt()){
 $pdf->SetFont('Times', 'B', 14);
 $pdf->Cell(0, 10, "Multiple Choice", 0, 1, 'C');
 $pdf->Ln(2);
-$sql = "SELECT answers,questions,choices FROM multc WHERE chid = '" . $id . "' LIMIT 1";
+$sql = "SELECT cola AS answers, colb AS questions, colc AS choices
+FROM 'chq'
+WHERE chid = $id AND type = 5 ";
 $result = sqlite_query($sdb,$sql);
 while ($row = sqlite_fetch_array($result)) {
     $answers = $row[0];
@@ -484,7 +499,9 @@ if($pdf->GetY() > $pdf->newPageAt()){
 $pdf->SetFont('Times', 'B', 14);
 $pdf->Cell(0, 10, "Identification", 0, 1, 'C');
 $pdf->Ln(2);
-$sql = "SELECT left , right FROM ident WHERE chid = '" . $id . "' LIMIT 1";
+$sql = "SELECT cola AS left, colb AS right
+FROM 'chq'
+WHERE chid = $id AND type = 2 ";
 $result = sqlite_query($sdb,$sql);
 while ($row = sqlite_fetch_array($result)) {
     $left = $row[0];
@@ -507,7 +524,9 @@ if($pdf->GetY() > $pdf->newPageAt()){
 $pdf->SetFont('Times', 'B', 14);
 $pdf->Cell(0, 10, "Matching People, Places, & Events", 0, 1, 'C');
 $pdf->Ln(2);
-$sql = "SELECT left,right FROM mppe WHERE chid = '" . $id . "' LIMIT 1";
+$sql = "SELECT cola AS left, colb AS right
+FROM 'chq'
+WHERE chid = $id AND type = 4 ";
 $result = sqlite_query($sdb,$sql);
 while ($row = sqlite_fetch_array($result)) {
     $left = $row[0];
@@ -530,7 +549,9 @@ if($pdf->GetY() > $pdf->newPageAt()){
 $pdf->SetFont('Times', 'B', 14);
 $pdf->Cell(0, 10, "Putting Things in Order", 0, 1, 'C');
 $pdf->Ln(2);
-$sql = "SELECT right FROM ptio WHERE chid = '" . $id . "' LIMIT 1";
+$sql = "SELECT cola AS right
+FROM 'chq'
+WHERE chid = $id AND type = 6 ";
 $result = sqlite_query($sdb,$sql);
 while ($row = sqlite_fetch_array($result)) {
     $right = $row[0];
@@ -549,7 +570,9 @@ $pdf->ptio($data);
 //Since the PTIO doesn't take a full page, I do not have to add another page
 $pdf->SetFont('Times', 'B', 14);
 $pdf->Cell(0, 10, "Matching Cause & Effect", 0, 1, 'C');
-$sql = "SELECT left,right FROM mcae WHERE chid = '" . $id . "' LIMIT 1";
+$sql = "SELECT cola AS left, colb AS right
+FROM 'chq'
+WHERE chid = $id AND type = 3 ";
 $result = sqlite_query($sdb,$sql);
 while ($row = sqlite_fetch_array($result)) {
     $left = $row[0];

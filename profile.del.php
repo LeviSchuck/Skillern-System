@@ -28,11 +28,11 @@ if(isset($_POST['del'])){
 
 function onloadedy() {
     $(document).ready(function() {
-        console.info("Okay, it looks like we are about to do some fun stuff here");
+        //console.info("Okay, it looks like we are about to do some fun stuff here");
         $('.delbtn').unbind();
         $('.delbtn').click( function(){
             $('.delbtn').unbind();
-            console.info("Okay, here we are in the delete button clicking");
+            //console.info("Okay, here we are in the delete button clicking");
             $.ajax({
                 type: "POST",
                 url: "profile.del.php",
@@ -47,11 +47,11 @@ function onloadedy() {
                 }
             });
         });
-        console.info("okay, so we should now have a delete button, now to make the cancel work");
+        //console.info("okay, so we should now have a delete button, now to make the cancel work");
         $('.cancelbtn').unbind();
         $('.cancelbtn').click( function(){
             $('.cancelbtn').unbind();
-            console.info("We have clicked on the cancel button");
+            //console.info("We have clicked on the cancel button");
             $.ajax({
                 url: "apanel.php",
                 success: function(data){

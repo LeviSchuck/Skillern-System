@@ -102,10 +102,10 @@ function onloadedy(){
         });
         $('.searchResult').die('click');
         $('.searchResult').live('click',function(){
-            console.log('clicked');
+            //console.log('clicked');
             $(this).slideUp(400);
             if($(this).find('.userID').length != 0){
-                console.log('we should get something');
+                //console.log('we should get something');
                 //we should be good to search and view this user.
                 $.ajax({
                     type: "POST",
@@ -121,7 +121,7 @@ function onloadedy(){
                     }
                 });
             }else {
-                console.log('don\'t click');
+                //console.log('don\'t click');
             }
         });
     });
