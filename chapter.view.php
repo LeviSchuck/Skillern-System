@@ -200,6 +200,12 @@ $(document).ready(function() {
         var newWindow = window.open('chapter.workbook.php?c=' + $(this).find('.chid').html(), '_blank');
     newWindow.focus();
     });
+
+$('.chprint').unbind();
+             $('.chprint').click( function(){
+        var newWindow = window.open('pdf.php?c=' + $(this).find('.chid').html(), '_blank');
+    newWindow.focus();
+    });
              $('.csection .cscettitle').unbind();
              $('.csection .cscettitle').click(function(){
                 $('.csection .cscettitle').unbind();

@@ -5,7 +5,13 @@
  * @copyright 2009
  */
 require("include/base.php");
-function tf($string){return $string;}//stub, not sure what this is supposed to do.
+function tf($input) {
+    if ((int)$input == 1) {
+        return "True";
+    } else {
+        return "False";
+    }
+}
 $loc = getcwd();
 $loc .= "/font/";
 define('FPDF_FONTPATH', $loc);
@@ -436,28 +442,34 @@ $pdf->Gloss($data);
 if($pdf->GetY() > $pdf->newPageAt()){
 	$pdf->AddPage();
 }
-$pdf->SetFont('Times', 'B', 14);
-$pdf->Cell(0, 10, "True & False", 0, 1, 'C');
-$pdf->Ln(2);
+
 
 $sql = "SELECT cola AS left, colb AS right
 FROM 'chq'
 WHERE chid = $id AND type = 7 ";
 $result = sqlite_query($sdb,$sql);
+$gotit = false;
 while ($row = sqlite_fetch_array($result)) {
     $left = $row[0];
     $right = $row[1];
+$gotit = true;
 }
+//die(print_r($left));
 $as = removecrap($left);
 $cp = removecrap($right);
 $as = split("\|", $as);
 $cs = split('\|', $cp);
 $howmany = count($as);
 $data = array();
+if($gotit){
+$pdf->SetFont('Times', 'B', 14);
+$pdf->Cell(0, 10, "True & False", 0, 1, 'C');
+$pdf->Ln(2);
 for ($x = 0; $x < $howmany; $x++) {
     $data[] = array($as[$x], $cs[$x]);
 }
 $pdf->trufal($data);
+}
 //Multiple Choice Time!
 if($pdf->GetY() > $pdf->newPageAt()){
 	$pdf->AddPage();
@@ -589,6 +601,6 @@ for ($x = 0; $x < $howmany; $x++) {
 }
 $pdf->mcae($data);
 //And send the generated PDF to the browser
-$pdf->Output();
+$pdf->Output("AP US Workbook Chapter $id.pdf","I");
 
 ?>
